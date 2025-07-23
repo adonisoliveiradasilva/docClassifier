@@ -1,0 +1,28 @@
+@import '../styles.scss';
+
+.all-content{
+    background-color: var(--color-surface-default);
+    width: 100vw;
+    height: 100vh;
+
+    .top-content{
+        width: 100vw;
+        @include padding-3;
+        @include flex-space-between;
+        color: var(--color-text-title);
+        .logo{
+            @include flex-center;
+            @include font-size-larger;
+
+            .image-logo{
+                width: clamp(30px, 7vh, 50px);
+                height: clamp(30px, 7vh, 50px);
+                background-image: url('../assets/logo.png');
+                background-size: contain;
+                background-position: center;
+                background-repeat: no-repeat;
+            }
+        }
+        
+    }
+}

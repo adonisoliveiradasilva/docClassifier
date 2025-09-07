@@ -1,0 +1,59 @@
+@import '../../../../styles.scss';
+
+.radio-group-content {
+    @include flex-center-top;
+
+    .radio-button {
+        width: 100%;
+        @include flex-left;
+        @include gap-3;
+    }
+}
+
+.radio-button {
+    margin-bottom: 10px;
+}
+
+.custom-radio {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    @include font-size-medium;
+    user-select: none;
+    position: relative;
+    padding-left: 30px;
+}
+
+.custom-radio input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.radio-mark {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 20px;
+    width: 20px;
+    border: 2px solid var(--color-surface-default);
+    border-radius: 50%;
+    background-color: transparent;
+}
+
+
+.custom-radio input:checked+.radio-mark::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--color-surface-default);
+
+}

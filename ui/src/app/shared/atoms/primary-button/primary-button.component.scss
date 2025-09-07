@@ -1,0 +1,42 @@
+@import '../../../../styles.scss';
+
+.primary-button-content{
+    width: 100%;
+    @include border-radius-2;
+    border: solid var(--color-surface-default) clamp(1px, .3vh, 1.5px);
+    @include gap-3;
+    @include flex-center;
+    height: 3rem;
+    background-color: transparent;
+    color: var(--color-surface-default);
+    font-weight: 400;
+    cursor: pointer;
+    @include font-size-medium;
+
+    &:hover{
+        background-color: var(--color-surface-default);
+        transition: all 300ms ease-in-out;
+        color: var(--color-text-title);
+
+        .spinner{
+            border-top: 2px solid var(--color-text-title);
+        }
+    }
+
+    .spinner {
+        border: 2px solid rgba(0,0,0,0.1);
+        border-top: 2px solid var(--color-surface-default);
+        border-radius: 50%;
+        width: 16px;
+        height: 16px;
+        display: inline-block;
+        animation: spin 1s linear infinite;
+        margin-left: 0.5rem;
+        vertical-align: middle;
+    }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

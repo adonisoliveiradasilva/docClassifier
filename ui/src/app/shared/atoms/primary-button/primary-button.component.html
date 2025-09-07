@@ -1,0 +1,10 @@
+<button class="primary-button-content" (click)="handleClick()" [disabled]="loading$ | async">
+    <ng-container *ngIf="!(loading$ | async); else loadingTpl">
+      {{ label }}
+    </ng-container>
+    <ng-template #loadingTpl>
+      Carregando
+      <span class="spinner"></span>
+    </ng-template>
+  </button>
+  

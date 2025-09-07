@@ -1,0 +1,10 @@
+@import '../../../../styles.scss';
+
+.top-bar-content{
+    width: 100%;
+    height: 4rem;
+    background-color: var(--color-surface-overlay);
+    @include flex-left;
+    @include padding-2;
+}
+

@@ -1,0 +1,19 @@
+@import '../styles.scss';
+
+.app-content{
+    width: 100%;
+    height: auto;
+    min-height: 100vh;
+    background-image: linear-gradient(180deg, var(--color-background-1), var(--color-background-2));
+    @include flex-center-top;
+    @include gap-1;
+
+    .app-content-body{
+        @include flex-center-top;
+        @include padding-4;
+        width: calc(100% - clamp(80px, 10vh, 120px));
+        gap: clamp(90px, 5vh, 120px);
+        margin: 0 clamp(40px, 5vh, 60px);
+        box-sizing: border-box;
+    }
+}

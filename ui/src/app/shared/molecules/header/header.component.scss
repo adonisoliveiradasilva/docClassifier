@@ -1,0 +1,35 @@
+@import '../../../../styles.scss';
+
+.header-content{
+    width: 50%;
+    height: auto;
+    @include flex-center-top;
+    @include gap-2;
+    
+    @media (max-width: 750px) {
+        width: 100%;
+    }
+
+    .header-icon{
+        height: 4rem;
+        width: 8rem;
+        background-image: url('../../../../assets/images/icon-desktop.svg');
+        background-size: contain;
+        background-position: left;
+        background-repeat: no-repeat;
+    }
+
+    h3{
+        color: var(--color-text-default);
+        font-weight: 400;
+    }
+
+    h2{
+        color: var(--color-text-title); 
+        font-weight: 500;
+
+        b{
+            color: var(--color-surface-default); 
+        }
+    }
+}

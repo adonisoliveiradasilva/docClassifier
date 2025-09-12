@@ -8,6 +8,7 @@ import { CardState } from '../../data/enums/card.enum';
 import { CommonModule } from '@angular/common';
 import { ImagePreviewComponent } from '../../atoms/image-preview/image-preview.component';
 import { DocumentService, AccuracyResponse } from '../../../core/services/document.service';
+import { ToastService } from '../../../core/services/toast.service';
 
 @Component({
   selector: 'app-card',
@@ -31,7 +32,12 @@ export class CardComponent {
   selectedDocType: string | null = null;
   accuracyResult: AccuracyResponse | null = null;
 
-  constructor(private documentService: DocumentService) {}
+  constructor(private documentService: DocumentService, private toast: ToastService) {
+  }
+
+  ngOnInit() {
+    setTimeout(() => this.toast.success('Toast do AppComponent', { title: 'Teste' }), 2000);
+  }
 
   get getOptionsDocument(): IOptionsDocument[] {
     return this._optionsDocument;

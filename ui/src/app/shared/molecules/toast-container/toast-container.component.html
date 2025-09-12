@@ -1,0 +1,6 @@
+<div class="toast-container">
+  <pre>{{ toasts$ | async | json }}</pre>
+  <div class="toast" *ngFor="let t of toasts$ | async" [class]=" 'toast ' + t.type ">
+    aaaaaaaaaaaaaaaaaaaaaaaaaa
+  </div>
+</div>

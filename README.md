@@ -1,0 +1,1 @@
+rodar a api python na raiz = python -m api.app

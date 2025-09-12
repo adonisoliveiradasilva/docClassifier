@@ -6,7 +6,8 @@
   
     --color-text-default: rgba(164, 172, 188, 1);
     --color-text-title: rgba(255, 255, 255, 1);
-  
+    --color-text-overlay:rgba(71, 71, 71, 1);
+
     --image-logo-main: url("./assets/logo.png");
 }
 
@@ -88,7 +89,7 @@ body, * {
 
 
 @mixin shadow-bottom {
-    box-shadow: 0 -10px 15px 0 var(--color-text-default);
+    box-shadow: 0 .1rem .3rem 0 var(--color-text-default);
 }
 
 @mixin shadow-bottom-left {

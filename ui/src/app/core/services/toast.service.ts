@@ -38,7 +38,7 @@ export class ToastService {
       duration: opts?.duration ?? 4000,
       dismissible: opts?.dismissible ?? true
     };
-    console.log('Adicionando toast:', toast); // <- teste
+    // console.log('Adicionando toast:', toast);
     this.actions$.next({ type: 'add', toast });
 
     if (toast.duration && toast.duration > 0) {

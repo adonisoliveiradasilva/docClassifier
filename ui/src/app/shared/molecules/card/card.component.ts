@@ -35,17 +35,12 @@ export class CardComponent {
   constructor(private documentService: DocumentService, private toast: ToastService) {
   }
 
-  ngOnInit() {
-    setTimeout(() => this.toast.success('Toast do AppComponent', { title: 'Teste' }), 2000);
-  }
-
   get getOptionsDocument(): IOptionsDocument[] {
     return this._optionsDocument;
   }
 
   handleSelected(event: IOptionsDocument) {
     this.selectedDocType = event.slug;
-    console.log('Opção selecionada:', event);
   }
 
   onUpload = (): Promise<void> => {
@@ -71,15 +66,16 @@ export class CardComponent {
   };
 
   onSend = async (): Promise<void> => {
-    if (!this.selectedFile || !this.selectedDocType) return;
+    if (!this.selectedFile || !this.selectedDocType) {
+      this.toast.success('Preencha o tipo de documento!', { title: 'Teste' })
+      return
+    };
 
     try {
-      console.log('Chamando a API...');
       const result = await firstValueFrom(
         this.documentService.uploadDocument(this.selectedFile, this.selectedDocType)
       );
       this.accuracyResult = result;
-      console.log('Resultado da API:', result);
       this.state$.next(CardState.FEEDBACK);
     } catch (err) {
       console.error('Erro no envio:', err);

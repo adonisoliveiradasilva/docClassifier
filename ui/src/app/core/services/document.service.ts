@@ -11,7 +11,7 @@ export interface AccuracyResponse {
   providedIn: 'root'
 })
 export class DocumentService {
-  private readonly apiUrl = 'http://localhost:8000/api/document'; // ajuste conforme sua API
+  private readonly apiUrl = 'http://localhost:8000/api/prediction'; // ajuste conforme sua API
 
   http: HttpClient = inject(HttpClient);
 

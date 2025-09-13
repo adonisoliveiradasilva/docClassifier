@@ -1,0 +1,45 @@
+@use '../../../../styles.scss' as *;
+
+.content-toast{
+    padding: 1rem;
+    background-color: var(--color-text-overlay);
+    border-radius: .5rem;
+    font-size: .8rem;
+    color: var(--color-text-title);
+    border-bottom: .2rem solid var(--color-surface-default);
+    @include flex-left;
+    gap: 1rem;
+
+    .circle-icon{
+        border-radius: 100%;
+        background-color: var(--color-surface-default);
+        padding: .5rem;
+        width: 1rem;
+        height: 1rem;
+        @include flex-center;
+    }
+
+    button{
+        position: relative;
+        border: none;
+        background-color: transparent;
+        color: var(--color-text-title);
+        padding: .5rem;
+        @include flex-center;   
+        cursor: pointer;
+        height: 100%;
+        padding-left: .5rem;
+        font-size: .8rem;
+
+        &::before{
+            content: '';
+            height: 3rem;
+            width: .1rem;
+            background-color: var(--color-text-default);
+            display: inline-block; 
+            position: absolute;
+            top: -.5rem;
+            left: 0;
+        }
+    }
+}

@@ -18,7 +18,6 @@ async def predict(request: Request):
     try:
         # Validação da imagem
         form = await request.form()
-        print("form", form)
         image: UploadFile = form.get("file")  # type: ignore
         await predict_image_validator(image)
         
@@ -33,12 +32,9 @@ async def predict(request: Request):
                 "content_type": image.content_type
             }
         }
-        print("b")
         response = await request_adapter(http_request, controller.handle)
-        print("c", response)
 
         if response is None:
-            print("d")
             raise HttpRequestError("Resposta vazia", status_code=500)
 
     except HttpRequestError as e:
@@ -46,6 +42,7 @@ async def predict(request: Request):
     
     except Exception as e:  # pylint: disable=broad-exception-caught
         response = log_and_handle_exception(e)
+
     return JSONResponse(
         status_code=response["statusCode"],
         content=response["data"]

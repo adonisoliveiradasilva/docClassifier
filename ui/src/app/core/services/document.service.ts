@@ -20,7 +20,7 @@ export class DocumentService {
   formData.append('file', file);
   formData.append('documentType', docType);
 
-  return this.http.post<AccuracyResponse>(this.apiUrl, formData).pipe(
+  return this.http.post<any>(this.apiUrl, formData).pipe(
     tap(res => console.log('Resposta da API:', res)),
     catchError(err => {
       console.error('Erro na API:', err);

@@ -10,5 +10,5 @@
 # Atualizar o pip
 > python.exe -m pip install --upgrade pip
 
-# Rodar a api python na raiz
+# Rodar a api python na raiz (Ativar o ambiente [windows])
 > python -m api.app

@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { ImagePreviewComponent } from '../../atoms/image-preview/image-preview.component';
 import { DocumentService, AccuracyResponse } from '../../../core/services/document.service';
 import { ToastService } from '../../../core/services/toast.service';
+import { LoadingService } from '../../../core/services/loading.service';
 
 @Component({
   selector: 'app-card',
@@ -32,8 +33,9 @@ export class CardComponent {
   selectedDocType: string | null = null;
   accuracyResult: AccuracyResponse | null = null;
 
-  constructor(private documentService: DocumentService, private toast: ToastService) {
-  }
+  constructor(private documentService: DocumentService, 
+    private toast: ToastService,
+    private loadingService: LoadingService) { }
 
   get getOptionsDocument(): IOptionsDocument[] {
     return this._optionsDocument;
@@ -67,18 +69,35 @@ export class CardComponent {
 
   onSend = async (): Promise<void> => {
     if (!this.selectedFile || !this.selectedDocType) {
-      this.toast.success('Preencha o tipo de documento!', { title: 'Teste' })
-      return
-    };
+      this.toast.warning('Preencha o tipo de documento!');
+      return;
+    }
+
+    const allowedTypes = ['image/png', 'image/jpeg'];
+    if (!allowedTypes.includes(this.selectedFile.type)) {
+      this.toast.error('Formato inválido! Selecione um PNG ou JPEG');
+      return;
+    }
 
     try {
+      // Requisição com loading automático
       const result = await firstValueFrom(
-        this.documentService.uploadDocument(this.selectedFile, this.selectedDocType)
+        this.loadingService.withLoading(
+          this.documentService.uploadDocument(this.selectedFile, this.selectedDocType)
+        )
       );
+
+      if (result.status === 200) {
+        this.toast.success(result.message, { title: 'Sucesso' });
+      } else {
+        this.toast.error(result.message || 'Erro desconhecido');
+      }
+
       this.accuracyResult = result;
-      this.state$.next(CardState.FEEDBACK);
+
     } catch (err) {
       console.error('Erro no envio:', err);
+      this.toast.error('Erro ao obter resposta da API!');
     }
   };
 

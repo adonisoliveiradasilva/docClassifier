@@ -1,45 +1,58 @@
 @use '../../../../styles.scss' as *;
 
-.content-toast{
-    padding: 1rem;
-    background-color: var(--color-text-overlay);
-    border-radius: .5rem;
-    font-size: .8rem;
+.content-toast {
+  padding: 1rem;
+  background-color: var(--color-text-overlay);
+  border-radius: .5rem;
+  font-size: .8rem;
+  color: var(--color-text-title);
+  border-bottom: .2rem solid var(--color-surface-default);
+  @include flex-left;
+  gap: 1rem;
+
+  animation: slide-up 0.4s ease-out; // <--- animação
+
+  .circle-icon {
+    border-radius: 100%;
+    background-color: var(--color-surface-default);
+    padding: .5rem;
+    width: 1rem;
+    height: 1rem;
+    @include flex-center;
+  }
+
+  button {
+    position: relative;
+    border: none;
+    background-color: transparent;
     color: var(--color-text-title);
-    border-bottom: .2rem solid var(--color-surface-default);
-    @include flex-left;
-    gap: 1rem;
+    padding: .5rem;
+    @include flex-center;   
+    cursor: pointer;
+    height: 100%;
+    padding-left: .5rem;
+    font-size: .8rem;
 
-    .circle-icon{
-        border-radius: 100%;
-        background-color: var(--color-surface-default);
-        padding: .5rem;
-        width: 1rem;
-        height: 1rem;
-        @include flex-center;
+    &::before {
+      content: '';
+      height: 3rem;
+      width: .1rem;
+      background-color: var(--color-text-default);
+      display: inline-block; 
+      position: absolute;
+      top: -.5rem;
+      left: 0;
     }
+  }
+}
 
-    button{
-        position: relative;
-        border: none;
-        background-color: transparent;
-        color: var(--color-text-title);
-        padding: .5rem;
-        @include flex-center;   
-        cursor: pointer;
-        height: 100%;
-        padding-left: .5rem;
-        font-size: .8rem;
-
-        &::before{
-            content: '';
-            height: 3rem;
-            width: .1rem;
-            background-color: var(--color-text-default);
-            display: inline-block; 
-            position: absolute;
-            top: -.5rem;
-            left: 0;
-        }
-    }
+@keyframes slide-up {
+  0% {
+    transform: translateY(100%); // começa abaixo da tela
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0); // posição final
+    opacity: 1;
+  }
 }

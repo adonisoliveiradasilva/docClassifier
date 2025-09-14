@@ -1,35 +1,35 @@
 <div class="card-content">
-    <h4> Selecione o tipo de documento: </h4>
-    <app-radio-group 
-      [options]="getOptionsDocument" 
-      (selectedOptionChange)="handleSelected($event)">
-    </app-radio-group>
-  
-    <ng-container *ngIf="(state$ | async) === 'WITH_IMAGE'">
-      <app-image-preview *ngIf="previewUrl" [previewUrl]="previewUrl"></app-image-preview>
-    </ng-container>
+  <h4> Selecione o tipo de documento: </h4>
+  <app-radio-group 
+    [options]="getOptionsDocument" 
+    (selectedOptionChange)="handleSelected($event)">
+  </app-radio-group>
 
-    <!-- Estado 1: sem foto -->
-    <ng-container *ngIf="(state$ | async) === 'EMPTY'">
-      <input 
-          type="file" 
-          accept="image/*" 
-          hidden 
-          #fileInput 
-          (change)="onFileSelected($event)"
-      >
-      <app-primary-button [label]="'Selecionar imagem'" [action]="onUpload"></app-primary-button>
-    </ng-container>
-  
-    <!-- Estado 2: com foto -->
-    <ng-container *ngIf="(state$ | async) === 'WITH_IMAGE'">
-      <app-primary-button [label]="'Remover'" [action]="onRemove"></app-primary-button>
-      <app-primary-button [label]="'Enviar'" [action]="onSend"></app-primary-button>
-    </ng-container>
-  
-    <!-- Estado 3: feedback -->
-    <ng-container *ngIf="(state$ | async) === 'FEEDBACK'">
-      <app-primary-button [label]="'Novo Upload'" [action]="onNewUpload"></app-primary-button>
-    </ng-container>
-  </div>
+  <ng-container *ngIf="(state$ | async) === 'WITH_IMAGE' || (state$ | async) === 'FEEDBACK'">
+    <app-image-preview *ngIf="previewUrl" [previewUrl]="previewUrl"></app-image-preview>
+  </ng-container>
+
+  <!-- Estado 1: sem foto -->
+  <ng-container *ngIf="(state$ | async) === 'EMPTY'">
+    <input 
+        type="file" 
+        accept="image/*" 
+        hidden 
+        #fileInput 
+        (change)="onFileSelected($event)"
+    >
+    <app-primary-button [label]="'Selecionar imagem'" [action]="onUpload"></app-primary-button>
+  </ng-container>
+
+  <!-- Estado 2: com foto -->
+  <ng-container *ngIf="(state$ | async) === 'WITH_IMAGE'">
+    <app-primary-button [label]="'Remover'" [action]="onRemove"></app-primary-button>
+    <app-primary-button [label]="'Enviar'" [action]="onSend"></app-primary-button>
+  </ng-container>
+
+  <!-- Estado 3: feedback -->
+  <ng-container *ngIf="(state$ | async) === 'FEEDBACK'">
+    <app-primary-button [label]="'Novo Upload'" [action]="onNewUpload"></app-primary-button>
+  </ng-container>
+</div>
   

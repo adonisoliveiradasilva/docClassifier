@@ -15,5 +15,12 @@
         gap: clamp(90px, 5vh, 120px);
         margin: 0 clamp(40px, 5vh, 60px);
         box-sizing: border-box;
+
+        .app-content-body-middle{
+            height: auto;
+            width: auto;
+            @include flex-center-top;
+            gap: 1rem;
+        }
     }
 }

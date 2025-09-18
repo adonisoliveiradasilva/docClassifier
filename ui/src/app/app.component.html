@@ -2,7 +2,10 @@
   <app-top-bar></app-top-bar>
   <div class="app-content-body">
     <app-header></app-header>
-    <app-card></app-card>
+    <div class="app-content-body-middle">
+      <app-feedback *ngIf="(feedbackState$ | async) as message"  [message]="message"></app-feedback>
+      <app-card></app-card>
+    </div>
   </div>
 </div>
 <app-toast-container></app-toast-container>

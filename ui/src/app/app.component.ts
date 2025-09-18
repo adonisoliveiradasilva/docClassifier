@@ -6,6 +6,8 @@ import { HeaderComponent } from './shared/molecules/header/header.component';
 import { CardComponent } from './shared/molecules/card/card.component';
 import { ToastContainerComponent } from './shared/molecules/toast-container/toast-container.component';
 import { LoadingComponent } from './shared/atoms/loading/loading.component';
+import { FeedbackComponent } from './shared/atoms/feedback/feedback.component';
+import { FeedbackService } from './core/services/feedback.service';
 
 @Component({
   selector: 'app-root',
@@ -16,13 +18,17 @@ import { LoadingComponent } from './shared/atoms/loading/loading.component';
     HeaderComponent,
     CardComponent,
     ToastContainerComponent,
-    LoadingComponent
+    LoadingComponent,
+    FeedbackComponent
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
   loadingState$ = this.loadingService.loadingState$;
+  feedbackState$ = this.feedbackService.feedbackState$;
 
-  constructor(private loadingService: LoadingService) {}
+  constructor(private loadingService: LoadingService, 
+    private feedbackService: FeedbackService
+  ) {}
 }

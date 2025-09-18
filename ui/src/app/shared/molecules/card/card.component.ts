@@ -10,6 +10,7 @@ import { ImagePreviewComponent } from '../../atoms/image-preview/image-preview.c
 import { DocumentService, AccuracyResponse } from '../../../core/services/document.service';
 import { ToastService } from '../../../core/services/toast.service';
 import { LoadingService } from '../../../core/services/loading.service';
+import { FeedbackService } from '../../../core/services/feedback.service';
 
 @Component({
   selector: 'app-card',
@@ -35,7 +36,9 @@ export class CardComponent {
 
   constructor(private documentService: DocumentService, 
     private toast: ToastService,
-    private loadingService: LoadingService) { }
+    private loadingService: LoadingService,
+    private feedbackService: FeedbackService
+  ) { }
 
   get getOptionsDocument(): IOptionsDocument[] {
     return this._optionsDocument;
@@ -89,6 +92,8 @@ export class CardComponent {
 
       if (result.status === 200) {
         this.toast.success(result.message, { title: 'Sucesso' });
+        this.feedbackService.activate(result.message)
+        this.state$.next(CardState.FEEDBACK);
       } else {
         this.toast.error(result.message || 'Erro desconhecido');
       }
@@ -125,5 +130,6 @@ export class CardComponent {
     this.previewUrl = null;
     this.accuracyResult = null;
     this.state$.next(CardState.EMPTY);
+    this.feedbackService.clear()
   }
 }

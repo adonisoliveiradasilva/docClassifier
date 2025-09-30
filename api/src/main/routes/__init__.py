@@ -1,1 +1,1 @@
-from .predict_image import predict_image_routes
+from .classify_documents import predict_image_routes

@@ -17,7 +17,7 @@ class ModelCNN(ModelCNNInterface):
     """
 
     def __init__(self) -> None:
-        self.path_model = "api/models/model_cnn.h5"
+        self.path_model = "api/models/model_classify_documents/model_cnn.h5"
         self.classes = ["cng", "rg", "passaport"]
 
 
@@ -44,20 +44,18 @@ class ModelCNN(ModelCNNInterface):
             all_confidences = {cls: float(predict[i]) for i, cls in enumerate(self.classes)}
 
             return {
-                "status": 200,
-                "message": "Operação realizada com sucesso",
-                "predicted_class": predicted_class,
-                "confidence": confidence,
-                "all_confidences": all_confidences
+                "status_code": 200,
+                "data": {
+                    "predicted_class": predicted_class,
+                    "confidence": confidence,
+                    "all_confidences": all_confidences,
+                },
             }
         
         except Exception as err:
             logger.error(f"[ModelCNN] - passo: erro ao executar a previsão da imagem: {str(err)}")
-            return {
-                "status": 500,
-                "message": f"Erro ao executar a previsão da imagem: {str(err)}"
+            return None
                 # "Não foi possível identificar um documento na imagem"
-            }
 
         finally:
             if model_cnn is not None:

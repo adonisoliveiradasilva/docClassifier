@@ -90,7 +90,7 @@ export class CardComponent {
         )
       );
 
-      if (result.status === 200) {
+      if (result.status_code === 200) {
         this.toast.success(result.message, { title: 'Sucesso' });
         this.feedbackService.activate(result.message)
         this.state$.next(CardState.FEEDBACK);

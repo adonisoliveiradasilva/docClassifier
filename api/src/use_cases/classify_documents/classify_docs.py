@@ -1,6 +1,6 @@
 from typing import Dict
 from api.src.use_cases.classify_documents.controllers import ModelCNNInterface
-from api.src.use_cases.classify_documents.helpers import pre_process_image, image_validator
+from api.src.use_cases.classify_documents.helpers import pre_process_image
 from api.src.infra.logs import logger
 
 

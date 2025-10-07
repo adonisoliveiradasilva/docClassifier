@@ -1,5 +1,7 @@
-from typing import Union, List, Type
+from typing import List, Type, Union
+
 from fastapi.responses import JSONResponse
+
 from .response_http import ResponseHTTP
 
 

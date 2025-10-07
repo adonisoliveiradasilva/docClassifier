@@ -5,6 +5,7 @@ class ColorFormatter(logging.Formatter):
     """
     Classe responsável por formatar as mensagens de log.
     """
+
     COLORS = {
         "DEBUG": "\033[37m",
         "INFO": "\033[36m",
@@ -14,18 +15,18 @@ class ColorFormatter(logging.Formatter):
     }
     RESET = "\033[0m"
 
-    def format(self, record):
+    def format(self, record: logging.LogRecord) -> str:
         color = self.COLORS.get(record.levelname, self.RESET)
         levelname_colored = f"{color}{record.levelname}{self.RESET}"
         record.levelname = levelname_colored
         return super().format(record)
+
 
 logger = logging.getLogger("app")
 logger.setLevel(logging.DEBUG)
 
 if not logger.hasHandlers():
     console_handler = logging.StreamHandler()
-    formatter = ColorFormatter("%(asctime)s - %(levelname)s - %(message)s",
-                               datefmt="%Y-%m-%d %H:%M:%S")
+    formatter = ColorFormatter("%(asctime)s - %(levelname)s - %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
     console_handler.setFormatter(formatter)
     logger.addHandler(console_handler)

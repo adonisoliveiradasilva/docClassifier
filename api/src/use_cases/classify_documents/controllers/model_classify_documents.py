@@ -6,6 +6,7 @@ class ModelCNNInterface(ABC):
     """
     Interface para a classe ClassifyImage
     """
+
     @abstractmethod
     def model_predict(self, image_bytes: bytes) -> Dict:
         """

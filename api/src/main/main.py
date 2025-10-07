@@ -1,9 +1,10 @@
-import pkgutil
 import importlib
+import pkgutil
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from api.src.infra.logs import logger
 
+from api.src.infra.logs import logger
 
 # Aplicação FastAPI
 app = FastAPI(
@@ -46,5 +47,6 @@ def import_routers(directory: str) -> None:
                 app.include_router(module.router)
         except Exception as err:
             logger.error(f"[import_routers] - erro ao executar a classificação da imagem: {str(err)}")
+
 
 import_routers("api/src/main/routers")

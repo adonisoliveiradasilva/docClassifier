@@ -5,6 +5,7 @@ class ResponseWithPredictionDocs(ResponseModel):
     """
     Modelo de resposta para requisições executadas com sucesso para o modelo de classificação de documentos.
     """
+
     status_code: int
     message: str
     data: dict
@@ -13,6 +14,7 @@ class ResponseWithPredictionDocs(ResponseModel):
         """
         Exemplo de resposta para requisições executadas com sucesso para o modelo de classificação de documentos.
         """
+
         schema_extra = {
             "example": {
                 "status_code": 200,
@@ -23,8 +25,8 @@ class ResponseWithPredictionDocs(ResponseModel):
                     "all_confidences": {
                         "CNH": 0.9999999,
                         "RG": 0.0000001,
-                        "PASSAPORTE": 0.0000001
-                    }
-                }
+                        "PASSAPORTE": 0.0000001,
+                    },
+                },
             }
         }

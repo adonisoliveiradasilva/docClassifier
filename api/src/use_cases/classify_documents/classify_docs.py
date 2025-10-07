@@ -1,13 +1,15 @@
 from typing import Dict
+
+from api.src.infra.logs import logger
 from api.src.use_cases.classify_documents.controllers import ModelCNNInterface
 from api.src.use_cases.classify_documents.helpers import pre_process_image
-from api.src.infra.logs import logger
 
 
 class ClassifyDocuments:
     """
     Classe responsável por orquestrar as funções de classificação de imagens.
     """
+
     logger.info("[ClassifyDocuments] - passo: iniciando a classificação de imagens")
 
     def __init__(self, model: ModelCNNInterface) -> None:
@@ -26,9 +28,7 @@ class ClassifyDocuments:
             predict = self.__model.model_predict(image_array)
             return predict
         except Exception as err:
-            logger.error(
-                f"[ClassifyDocuments] - passo: erro ao executar a classificação da imagem: {str(err)}"
-            )
+            logger.error(f"[ClassifyDocuments] - passo: erro ao executar a classificação da imagem: {str(err)}")
             raise
 
     def close(self):

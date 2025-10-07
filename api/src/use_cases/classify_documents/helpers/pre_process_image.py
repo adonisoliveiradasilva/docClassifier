@@ -1,11 +1,13 @@
-from tensorflow.keras.preprocessing import image
 from io import BytesIO
+from typing import Tuple
 
 import numpy as np
+from tensorflow.keras.preprocessing import image
 
 from api.src.infra.logs import logger
 
-def pre_process_image(image_bytes: bytes, target_size=(128, 128)) -> np.ndarray:
+
+def pre_process_image(image_bytes: bytes, target_size: Tuple[int, int] = (128, 128)) -> np.ndarray:
     """
     Pré-processa uma iamgem para ser usada no modelo
 
@@ -20,7 +22,8 @@ def pre_process_image(image_bytes: bytes, target_size=(128, 128)) -> np.ndarray:
     try:
         if not isinstance(image_bytes, bytes):
             logger.error("[pre_process_image] - passo: a imagem não é em bytes")
-            raise ValueError
+            raise ValueError("A imagem deve ser fornecida em formato bytes")
+
         img = image.load_img(BytesIO(image_bytes), target_size=target_size)
         img_array = image.img_to_array(img) / 255.0
         img_array = np.expand_dims(img_array, axis=0)

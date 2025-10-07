@@ -1,13 +1,13 @@
-from typing import Dict
-from tensorflow.keras.models import load_model
-from tensorflow.keras import backend as K
-import numpy as np
-
-
-from api.src.use_cases.classify_documents.controllers import ModelCNNInterface
-from api.src.infra.logs import logger
-
 import warnings
+from typing import Dict
+
+import numpy as np
+from tensorflow.keras import backend as K
+from tensorflow.keras.models import load_model
+
+from api.src.infra.logs import logger
+from api.src.use_cases.classify_documents.controllers import ModelCNNInterface
+
 warnings.filterwarnings("ignore")
 
 
@@ -20,11 +20,8 @@ class ModelCNN(ModelCNNInterface):
         self.path_model = "api/models/model_classify_documents/model_cnn.h5"
         self.classes = ["cng", "rg", "passaport"]
 
-
     def model_predict(self, image_bytes: bytes) -> Dict:
-        logger.info(
-            "[ModelCNN] - passo: iniciando a previsão da imagem"
-        )
+        logger.info("[ModelCNN] - passo: iniciando a previsão da imagem")
         model_cnn = None
         try:
             model_cnn = load_model(self.path_model)
@@ -36,7 +33,7 @@ class ModelCNN(ModelCNNInterface):
             if predict is None:
                 logger.error("[ModelCNN] - passo: erro ao executar a previsão da imagem")
                 raise ValueError
-            
+
             predict = predict[0]
             predicted_index = int(np.argmax(predict))
             predicted_class = self.classes[predicted_index]
@@ -51,11 +48,11 @@ class ModelCNN(ModelCNNInterface):
                     "all_confidences": all_confidences,
                 },
             }
-        
+
         except Exception as err:
             logger.error(f"[ModelCNN] - passo: erro ao executar a previsão da imagem: {str(err)}")
             return None
-                # "Não foi possível identificar um documento na imagem"
+            # "Não foi possível identificar um documento na imagem"
 
         finally:
             if model_cnn is not None:

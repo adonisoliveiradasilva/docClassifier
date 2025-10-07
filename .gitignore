@@ -46,6 +46,7 @@ Thumbs.db
 
 **/__pycache__
 .pytest_cache
+.mypy_cache
 
 # arquivo de rodar debug
 run.py

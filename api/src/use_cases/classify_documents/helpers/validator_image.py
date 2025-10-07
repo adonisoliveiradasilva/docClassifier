@@ -1,13 +1,15 @@
-from typing import Union
 from pathlib import Path
-from fastapi import UploadFile
-from api.src.infra.logs import logger
+from typing import Union
 
+from fastapi import UploadFile
+
+from api.src.infra.logs import logger
 
 allowed_mime_types = ["image/png", "image/jpeg"]
 allowed_extensions = [".png", ".jpg", ".jpeg"]
 
-def image_validator(image: UploadFile) ->Union[bytes, str]:
+
+def image_validator(image: UploadFile) -> Union[bytes, str]:
     """
     Valida se o arquivo enviado é uma imagem do tipo permitido (PNG ou JPEG) e com extensão permitida
     e retorna o bytes da imagem

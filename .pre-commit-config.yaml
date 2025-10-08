@@ -25,7 +25,7 @@ repos:
           - --max-line-length=120
           - --extend-ignore=E203
           - --extend-ignore=W503
-        files: ^api/.*\.py$
+        # files: ^api/.*\.py$
 
 
       # - id: pylint

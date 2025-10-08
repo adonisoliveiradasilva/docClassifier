@@ -15,11 +15,18 @@ repos:
       - id: isort
         args: ["--profile", "black"]
 
-  #     - id: isort
-  #       name: isort
-  #       entry: venv/Scripts/isort.exe api
-  #       language: system
-  #       types: [python]
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.1.1
+    hooks:
+      - id: flake8
+        require_serial: true
+        stages: [commit]
+        args:
+          - --max-line-length=120
+          - --extend-ignore=E203
+          - --extend-ignore=W503
+        files: ^api/.*\.py$
+
 
       # - id: pylint
       #   name: pylint

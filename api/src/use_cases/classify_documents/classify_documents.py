@@ -24,6 +24,9 @@ class ClassifyDocuments:
 
             image_array = pre_process_image(image)
             predict = self.__model.model_predict(image_array)
+            if predict is None:
+                return {"message": "Erro interno ao classificar o documento.", "status_code": 500}
+
             predicted_class = predict["data"]["predicted_class"]
 
             return self.__compare_types(documentType, predicted_class)
@@ -32,7 +35,7 @@ class ClassifyDocuments:
             logger.error(f"[ClassifyDocuments] - passo: erro ao executar a classificação da imagem: {str(err)}")
             return {"message": "Erro interno ao classificar o documento.", "status_code": 500}
 
-    def __validate_document_type_input(self, document_type: str) -> None:
+    def __validate_document_type_input(self, document_type: str) -> Dict | None:
         """
         Valida se o tipo de documento informado pelo usuário é permitido pelo modelo.
         """

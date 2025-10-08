@@ -1,4 +1,4 @@
-from typing import List, Type, Union
+from typing import List, Optional, Type
 
 from fastapi.responses import JSONResponse
 
@@ -11,7 +11,7 @@ class ResponseHTTPHandler:
     """
 
     @staticmethod
-    def create(status_code: int, data: Union[dict, None] = None, message: str = None) -> Union[JSONResponse, None]:
+    def create(status_code: int, data: Optional[dict] = None, message: Optional[str] = None) -> Optional[JSONResponse]:
         """
         Cria o conteúdo das respostas.
 

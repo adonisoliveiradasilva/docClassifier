@@ -22,6 +22,9 @@ def image_validator(image: UploadFile) -> Union[bytes, str]:
         if not image.content_type or image.content_type not in allowed_mime_types:
             return f"Arquivo deve ser uma imagem do tipo: {', '.join(allowed_mime_types)}"
 
+        if not image.filename:
+            return "O arquivo enviado não possui um nome válido"
+
         ext = Path(image.filename).suffix.lower()
         if ext not in allowed_extensions:
             return f"Arquivo deve ser uma imagem do tipo: {', '.join(allowed_mime_types)}"

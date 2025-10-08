@@ -2,8 +2,6 @@ import os
 import warnings
 from typing import Dict
 
-os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
-
 import numpy as np
 from tensorflow.keras import backend as K
 from tensorflow.keras.models import load_model
@@ -11,6 +9,7 @@ from tensorflow.keras.models import load_model
 from api.src.infra.logs import logger
 from api.src.use_cases.classify_documents.controllers import ModelCNNInterface
 
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 warnings.filterwarnings("ignore")
 
 
@@ -26,7 +25,7 @@ class ModelCNN(ModelCNNInterface):
         if self.model_cnn is None:
             raise ValueError("Erro ao carregar o modelo CNN")
 
-    def model_predict(self, image_bytes: bytes) -> Dict:
+    def model_predict(self, image_bytes: np.ndarray) -> Dict | None:
         logger.info("[ModelCNN] - passo: iniciando a previsão da imagem")
         try:
             predict = self.model_cnn.predict(image_bytes)

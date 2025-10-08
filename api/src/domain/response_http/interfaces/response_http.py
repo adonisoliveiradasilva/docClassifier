@@ -1,5 +1,5 @@
 from abc import ABC
-from typing import Union
+from typing import Optional, Union
 
 from fastapi.responses import JSONResponse
 
@@ -31,7 +31,7 @@ class ResponseHTTP(ABC):
             return True
         return False
 
-    def response(self, data: Union[dict, None] = None, message: str = None) -> JSONResponse:
+    def response(self, data: Union[dict, None] = None, message: Optional[str] = None) -> JSONResponse:
         """
         Método responsável por criar o body da resposta à solicitação realizada a aplicação.
 

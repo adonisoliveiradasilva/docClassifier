@@ -10,12 +10,8 @@ class ResponseWithPredictionDocs(ResponseModel):
     message: str
     data: dict
 
-    class Config:
-        """
-        Exemplo de resposta para requisições executadas com sucesso para o modelo de classificação de documentos.
-        """
-
-        schema_extra = {
+    model_config = {
+        "json_schema_extra": {
             "example": {
                 "status_code": 200,
                 "message": "Operação realizada com sucesso",
@@ -30,3 +26,4 @@ class ResponseWithPredictionDocs(ResponseModel):
                 },
             }
         }
+    }

@@ -1,5 +1,8 @@
+import os
 import warnings
 from typing import Dict
+
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 
 import numpy as np
 from tensorflow.keras import backend as K
@@ -17,19 +20,16 @@ class ModelCNN(ModelCNNInterface):
     """
 
     def __init__(self) -> None:
-        self.path_model = "api/models/model_classify_documents/model_cnn.h5"
+        self.path_model = "api/src/infra/models/model_classify_documents/model_cnn.h5"
         self.classes = ["cng", "rg", "passaport"]
+        self.model_cnn = load_model(self.path_model)
+        if self.model_cnn is None:
+            raise ValueError("Erro ao carregar o modelo CNN")
 
     def model_predict(self, image_bytes: bytes) -> Dict:
         logger.info("[ModelCNN] - passo: iniciando a previsão da imagem")
-        model_cnn = None
         try:
-            model_cnn = load_model(self.path_model)
-            if model_cnn is None:
-                logger.error("[ModelCNN] - passo: erro ao carregar o modelo")
-                raise ValueError
-
-            predict = model_cnn.predict(image_bytes)
+            predict = self.model_cnn.predict(image_bytes)
             if predict is None:
                 logger.error("[ModelCNN] - passo: erro ao executar a previsão da imagem")
                 raise ValueError
@@ -55,6 +55,4 @@ class ModelCNN(ModelCNNInterface):
             # "Não foi possível identificar um documento na imagem"
 
         finally:
-            if model_cnn is not None:
-                del model_cnn
-                K.clear_session()
+            K.clear_session()

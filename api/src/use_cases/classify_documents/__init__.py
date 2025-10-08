@@ -1,1 +1,1 @@
-from .classify_docs import ClassifyDocuments
+from .classify_documents import ClassifyDocuments

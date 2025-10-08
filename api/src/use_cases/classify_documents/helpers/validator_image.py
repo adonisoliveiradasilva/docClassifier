@@ -29,10 +29,9 @@ def image_validator(image: UploadFile) -> Union[bytes, str]:
         images_bytes = image.file.read()
         if not images_bytes:
             logger.info("[image_validator] - erro ao converter imagem para bytes")
-            return None
 
         return images_bytes
 
     except Exception as err:
         logger.error(f"[image_validator] - erro na execução método image_validator: {str(err)}")
-        return "Erro ao processar a imagem"
+        return "Erro ao converter imagem para bytes"

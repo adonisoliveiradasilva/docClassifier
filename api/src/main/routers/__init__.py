@@ -1,1 +1,1 @@
-from .classify_documents import model_classify_docs
+from .classify_documents import router

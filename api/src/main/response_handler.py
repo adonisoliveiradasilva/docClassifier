@@ -2,7 +2,7 @@ from typing import List, Type, Union
 
 from fastapi.responses import JSONResponse
 
-from api.src.domain.response_http.interfaces import ResponseHTTP
+from api.src.domain.response_http.interfaces.response_http import ResponseHTTP
 
 
 class ResponseHTTPHandler:

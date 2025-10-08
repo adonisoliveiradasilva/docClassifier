@@ -4,7 +4,7 @@ from typing import Dict
 
 class ModelCNNInterface(ABC):
     """
-    Interface para a classe ClassifyImage
+    Interface do modelo para o caso de uso classify_documents
     """
 
     @abstractmethod

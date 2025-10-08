@@ -1,18 +1,25 @@
 repos:
-  - repo: local
+  - repo: https://github.com/ambv/black
+    rev: 24.8.0
     hooks:
-      - id: black
-        name: black
-        entry: venv/Scripts/black.exe api
-        language: system
-        types: [python]
-        args: [--line-length=120]
-
+    - id: black
+      language_version: python3.11
+      require_serial: true
+      stages: [commit]
+      args:
+        - --line-length=120
+        - api/src/
+  - repo: https://github.com/pre-commit/mirrors-isort
+    rev: v5.10.0
+    hooks:
       - id: isort
-        name: isort
-        entry: venv/Scripts/isort.exe api
-        language: system
-        types: [python]
+        args: ["--profile", "black"]
+
+  #     - id: isort
+  #       name: isort
+  #       entry: venv/Scripts/isort.exe api
+  #       language: system
+  #       types: [python]
 
       # - id: pylint
       #   name: pylint
@@ -28,7 +35,7 @@ repos:
       #   language: system
       #   types: [python]
       #   args: [--max-line-length=120, --extend-ignore=E203,W503]
-      #   files: ^api/.*\.py$  # ← Apenas arquivos .py dentro de api/
+      #   files: ^api/.*\.py$
 
       # - id: mypy
       #   name: mypy
@@ -38,8 +45,18 @@ repos:
       #   args: [--config-file=api/mypy.ini]
 
 
-      - id: requirements
-        name: requirements
-        entry: powershell -Command "venv\Scripts\python.exe -m pip freeze > api\requirements.txt; git add api\requirements.txt"
-        language: system
-        pass_filenames: false
+      # - id: requirements
+      #   name: requirements
+      #   entry: powershell -Command "venv\Scripts\python.exe -m pip freeze > api\requirements.txt; git add api\requirements.txt"
+      #   language: system
+      #   pass_filenames: false
+
+
+  # - repo: local
+  #   hooks:
+  #     - id: black
+  #       name: black
+  #       entry: venv/Scripts/black.exe api
+  #       language: system
+  #       types: [python]
+  #       args: [--line-length=120]

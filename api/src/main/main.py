@@ -6,7 +6,6 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from api.src.infra.logs import logger
 
-# Aplicação FastAPI
 app = FastAPI(
     title="API Docs Classifier",
     description="API para classificação de documentos usando TensorFlow.",
@@ -16,12 +15,11 @@ app = FastAPI(
     redoc_url="/documentation",
 )
 
-
+# CORS
 origins = [
     "http://localhost:4200",
     "http://127.0.0.1:4200",
 ]
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,

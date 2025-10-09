@@ -28,6 +28,19 @@ repos:
           - --extend-ignore=W503
         files: ^api/.*\.py$
 
+  -   repo: local
+      hooks:
+        - id: pylint
+          name: pylint
+          entry: pylint
+          language: system
+          require_serial: true
+          types: [python]
+          args:
+            - -rn
+            - -sn
+            - --rcfile=api/.pylintrc
+
   - repo: local
     hooks:
       - id: mypy
@@ -49,32 +62,13 @@ repos:
           - -r
           - api/src
 
-  -   repo: local
-      hooks:
-        - id: pylint
-          name: pylint
-          entry: pylint
-          language: system
-          require_serial: true
-          types: [python]
-          args:
-            - -rn
-            - -sn
-            - --rcfile=api/.pylintrc
-
-      # - id: pylint
-      #   name: pylint
-      #   entry: venv/Scripts/pylint.exe api
-      #   language: system
-      #   pass_filenames: true
-      #   stages: [commit]
-      #   args: ["--rcfile=api/.pylintrc", "--output-format=colorized"]
-
-
-
-      # - id: requirements
-      #   name: requirements
-      #   entry: powershell -Command "venv\Scripts\python.exe -m pip freeze > api\requirements.txt; git add api\requirements.txt"
-      #   language: system
-      #   pass_filenames: false
+  - repo: local
+    hooks:
+      - id: requirements
+        name: requirements
+        entry: powershell -Command "& 'venv/Scripts/python.exe' -m pip freeze > 'api/requirements.txt'; git add 'api/requirements.txt'"
+        language: system
+        pass_filenames: false
+        stages: [commit]
+        require_serial: true
 

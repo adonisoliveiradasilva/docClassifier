@@ -49,6 +49,19 @@ repos:
           - -r
           - api/src
 
+  -   repo: local
+      hooks:
+        - id: pylint
+          name: pylint
+          entry: pylint
+          language: system
+          require_serial: true
+          types: [python]
+          args:
+            - -rn
+            - -sn
+            - --rcfile=api/.pylintrc
+
       # - id: pylint
       #   name: pylint
       #   entry: venv/Scripts/pylint.exe api

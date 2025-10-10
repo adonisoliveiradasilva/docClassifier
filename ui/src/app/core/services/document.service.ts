@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 
 export interface AccuracyResponse {
-  status: number;
+  status_code: number;
   message: string;
   data: {
     predicted_class: string;
@@ -17,7 +17,7 @@ export interface AccuracyResponse {
   providedIn: 'root'
 })
 export class DocumentService {
-  private readonly apiUrl = 'http://localhost:8000/api/prediction';
+  private readonly apiUrl = 'http://localhost:8000/model/model_classify_docs';
 
   http: HttpClient = inject(HttpClient);
 

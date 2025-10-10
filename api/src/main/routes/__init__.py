@@ -1,1 +1,0 @@
-from .predict_image import predict_image_routes

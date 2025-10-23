@@ -37,10 +37,6 @@ def create_app() -> FastAPI:
 
     fastapi_app.include_router(classify_router.router)
 
-    # @fastapi_app.get("/", tags=["Root"], include_in_schema=False)
-    # def read_root():
-    #     return {"message": "API de Classificação de Documentos v1.0. Acesse /swagger ou /docs."}
-
     return fastapi_app
 
 

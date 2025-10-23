@@ -48,5 +48,8 @@ Thumbs.db
 .pytest_cache
 .mypy_cache
 
-# arquivo de rodar debug
+# Arquivo para rodar debug
 run.py
+
+# Ignorar pasta de dados
+api/src/infra/datasets/train/

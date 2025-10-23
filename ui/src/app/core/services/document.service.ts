@@ -17,7 +17,7 @@ export interface AccuracyResponse {
   providedIn: 'root'
 })
 export class DocumentService {
-  private readonly apiUrl = 'http://localhost:8000/model/model_classify_docs';
+  private readonly apiUrl = 'http://localhost:8000/model/classify_docs';
 
   http: HttpClient = inject(HttpClient);
 

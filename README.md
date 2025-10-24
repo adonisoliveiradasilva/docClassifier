@@ -50,7 +50,7 @@ O modelo central é uma **Rede Neural Convolucional (CNN)** treinada para catego
 
 1.  **Clonar o repositório:**
     ```bash
-    git clone [link-do-seu-repo]
+    git clone https://github.com/adonisoliveiradasilva/docClassifier.git
     cd docClassifier
     ```
 2.  **Criar e Ativar o ambiente virtual**

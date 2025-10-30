@@ -22,7 +22,7 @@ async def prediction_error_handler(_request: Request, exc: PredictionError) -> J
     logger.error(f"[PredictionError] - Erro não esperado na predição: {exc}")
     content = ResponseModel(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-        message="Erro interno no servidor durante a classificação.",
+        message="Erro interno no servidor durante a classificação",
         data={"error_type": exc.__class__.__name__},
     ).model_dump()
 

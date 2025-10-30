@@ -3,7 +3,13 @@ from fastapi.concurrency import run_in_threadpool
 
 from api.src.domain.enums import DocumentTypeEnum
 from api.src.main.dependencies import get_model_classifier
-from api.src.main.schemas import PredictionResponse, ResponseBadRequest, ResponseErrorModel, ResponseModel
+from api.src.main.schemas import (
+    ClassificationResponseModel,
+    PredictionResponse,
+    ResponseBadRequest,
+    ResponseErrorModel,
+    ResponseModel,
+)
 from api.src.main.validators.validator_image import validate_image
 from api.src.use_cases.classify_documents import ClassifyDocuments
 
@@ -16,7 +22,6 @@ router = APIRouter(tags=["ClassifyDocuments"], prefix="/model")
         "Classifica a imagem enviada (ex: CNH, RG, Passaporte) e valida "
         "se o tipo identificado pelo modelo corresponde ao tipo informado pelo usuário."
     ),
-    response_model=PredictionResponse,
     responses={
         400: {"model": ResponseBadRequest},
         413: {"model": ResponseModel},
@@ -48,6 +53,13 @@ async def classify_docs(
         document_type=expected_document_type,
     )
 
-    payload = PredictionResponse.model_validate(result)
-
-    return ResponseModel(status_code=status.HTTP_200_OK, message="Classificação realizada com sucesso.", data=payload)
+    payload = ClassificationResponseModel.model_validate(result)
+    return PredictionResponse(
+        status_code=status.HTTP_200_OK, message="Classificação realizada com sucesso", data=payload
+    )
+    # except Exception as err:
+    #     return ResponseErrorModel(
+    #         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+    #         message="Erro interno no servidor durante a classificação",
+    #         data={"error_type": str(err)}
+    #     )

@@ -27,14 +27,12 @@ class ModelClassifyDocuments(ModelClassifyDocumentsInterface):
             self.model = load_model(PATH_MODEL)
             self._target_size = IMAGE_SIZE
 
+            # Aqui não preciso ler metricas completas, apenas os nomes das classes
+
             class_names = self._load_class_names(Path(PATH_METRICS))
             self._classes: List[str] = [name for name, index in sorted(class_names.items(), key=lambda item: item[1])]
-        except FileNotFoundError:
-            logger.error("[ModelClassifyDocuments] - arquivo do modelo ou métricas não encontrado")
-            raise
-        except Exception as err:
-            logger.error(f"[ModelClassifyDocuments] -  erro ao modelo: {str(err)}")
-            raise
+        except Exception as exc:
+            raise ValueError("[ModelClassifyDocuments] - arquivo do modelo ou métricas não encontrado") from exc
 
     def predict(self, image_bytes: bytes) -> Tuple[str, float]:
         """ "
@@ -54,8 +52,7 @@ class ModelClassifyDocuments(ModelClassifyDocumentsInterface):
             return str(label), confience
 
         except Exception as err:
-            logger.error(f"[ModelClassifyDocuments] - erro ao executar a previsão da imagem: {str(err)}")
-            raise
+            raise ValueError(f"[ModelClassifyDocuments] - erro ao executar a previsão da imagem: {str(err)}") from err
 
     def _load_class_names(self, path: Path) -> Dict[str, int]:
         """

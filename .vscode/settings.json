@@ -1,11 +1,16 @@
 {
+    "python.pythonPath": "C:\\Projetos\\docClassifier\\venv\\Scripts\\python.exe",
     "python.linting.enabled": true,
     "python.linting.pylintEnabled": true,
+    "python.linting.pylintPath": "C:\\Projetos\\docClassifier\\venv\\Scripts\\pylint.exe",
     "python.linting.pylintArgs": ["--rcfile=${workspaceFolder}/api/.pylintrc"],
+    "python.terminal.activateEnvironment": true,
     "files.exclude": {
         "**/*.pyc": {"when": "$(basename).py"},
         "**/__pycache__": true,
         "**/.pytest_cache": true,
         "**/.mypy_cache": true
-    }
+    },
+    "python-envs.pythonProjects": [],
+    "python-envs.defaultEnvManager": "ms-python.python:venv"
 }

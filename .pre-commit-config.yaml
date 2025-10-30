@@ -81,7 +81,7 @@ repos:
       - id: pytest
         name: pytest
         require_serial: true
-        entry: .\venv\Scripts\pytest.exe -m -v tests/
+        entry: .\venv\Scripts\pytest.exe
         language: system
         always_run: true
         pass_filenames: false

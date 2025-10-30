@@ -53,26 +53,26 @@ O modelo central é uma **Rede Neural Convolucional (CNN)** treinada para catego
     git clone https://github.com/adonisoliveiradasilva/docClassifier.git
     cd docClassifier
     ```
-2.  **Criar e Ativar o ambiente virtual**
+2.  **Criar e ativar o ambiente virtual (Windows PowerShell)**
     ```bash
-    # Cria o ambiente
     python -m venv venv
 
-    # Ativa o ambiente (Windows PowerShell)
     .\venv\Scripts\Activate.ps1
-
-    # Ou para Linux/macOS
-    source venv/bin/activate
     ```
 3.  **Instalar dependências**
     ```bash
-    # Recomenda-se atualizar o pip primeiro
     python -m pip install --upgrade pip
 
-    # Instala as dependências do projeto
     pip install -r requirements.txt  
     ```
-4.  **Rodar a API**
+
+4.  **Configurar pré-commit**
+    ```bash
+    pre-commit install -t pre-push 
+    ```
+
+
+5.  **Rodar a API**
     ```bash
     python -m api.app
     ```
@@ -103,3 +103,5 @@ O modelo central é uma **Rede Neural Convolucional (CNN)** treinada para catego
 Para detalhes técnicos sobre a arquitetura do modelo, estrutura de pastas, _endpoints_ da API, acesse:
 
 [**/docs**](docs/)
+
+#### pre-commit install -t pre-push

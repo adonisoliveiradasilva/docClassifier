@@ -1,7 +1,6 @@
 from typing import List, Tuple
 
-from keras.preprocessing.image import ImageDataGenerator
-from keras.utils import DirectoryIterator
+from tensorflow.keras.preprocessing.image import DirectoryIterator, ImageDataGenerator
 
 from api.ml_training.constants import BATCH_SIZE, IMAGE_SIZE, PATH_DATASET_TRAIN, SEED, VALIDATION_SPLIT
 from api.src.infra.logs import logger
@@ -52,5 +51,5 @@ class ImageDatasetLoader:
 
             return train_generator, validation_generator, class_labels
         except Exception as err:
-            logger.error(f"[ImageDatasetLoader] -  erro ao processar as imagens para o treinamento: {str(err)}")
+            logger.error(f"[ImageDatasetLoader] - erro ao processar as imagens para o treinamento: {str(err)}")
             raise

@@ -29,7 +29,7 @@ def test_model_classify_document_not_path():
 
 @mock.patch("api.src.infra.contracts.classify_documents.model_classify.ModelClassifyDocuments._load_class_names")
 @mock.patch("api.src.infra.contracts.classify_documents.model_classify.load_model")
-def test_model_classify_documents_predict_error(mock_load_model, mock_load_class_names, test_image_bytes):
+def test_model_classify_documents_predict_error(mock_load_model, mock_load_class_names, image_bytes):
 
     mock_model_instance = mock.MagicMock()
     mock_model_instance.predict.side_effect = Exception("Erro ao fazer a predição")
@@ -39,7 +39,7 @@ def test_model_classify_documents_predict_error(mock_load_model, mock_load_class
     model = ModelClassifyDocuments()
 
     with pytest.raises(ValueError) as exc_info:
-        model.predict(test_image_bytes)
+        model.predict(image_bytes)
 
     assert "[ModelClassifyDocuments] - erro ao executar a previsão da imagem: Erro ao fazer a predição" in str(
         exc_info.value
@@ -48,11 +48,11 @@ def test_model_classify_documents_predict_error(mock_load_model, mock_load_class
 
 @mock.patch("api.src.infra.contracts.classify_documents.model_classify.ModelClassifyDocuments._load_class_names")
 @mock.patch("api.src.infra.contracts.classify_documents.model_classify.load_model")
-def test_model_classify_documents_predict_success(mock_load_model, mock_load_class_names, test_image_bytes):
+def test_model_classify_documents_predict_success(mock_load_model, mock_load_class_names, image_bytes):
 
     mock_load_model.predict.return_value = ("RG", 0.95)
     mock_load_class_names.return_value = {"RG": 0, "CNH": 1}
-    label, confidence = mock_load_model.predict(test_image_bytes)
+    label, confidence = mock_load_model.predict(image_bytes)
 
     assert label == "RG"
     assert confidence == 0.95

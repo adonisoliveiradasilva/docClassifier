@@ -453,7 +453,8 @@ disable=raw-checker-failed,
       consider-using-with,
       too-few-public-methods,
       import-error,
-      no-name-in-module
+      no-name-in-module,
+      redefined-outer-name,
 
 # Enable the message, report, category or checker with the given id(s). You can
 # either give multiple identifier separated by comma (,) or put this option

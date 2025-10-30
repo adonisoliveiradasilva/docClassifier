@@ -23,11 +23,11 @@ def image_bytes() -> bytes:
 
 
 @pytest.fixture
-def mock_image(mock_image_bytes):
+def mock_image(image_bytes):
     """
     Cria um mock de arquivo de imagem para upload.
     """
-    return {"image": ("test.png", io.BytesIO(mock_image_bytes), "image/png")}
+    return {"image": ("test.png", io.BytesIO(image_bytes), "image/png")}
 
 
 @pytest.fixture

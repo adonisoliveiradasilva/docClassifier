@@ -1,4 +1,4 @@
-from unittest.mock import PropertyMock
+from unittest import mock
 
 import pytest
 
@@ -16,8 +16,7 @@ def test_classify_documents_init(mock_use_case):
 def test_classify_documents_validate_type_input(mock_use_case, mock_image):
 
     allowed_classes_list = ["rg", "passaporte"]
-    mock_classes_prop = PropertyMock(return_value=allowed_classes_list)
-    type(mock_use_case).classes = mock_classes_prop
+    mock_use_case.classes = mock.MagicMock(return_value=allowed_classes_list)
 
     classify_documents = ClassifyDocuments(model_classifier=mock_use_case)
 
@@ -32,6 +31,7 @@ def test_classify_documents_validate_type_input(mock_use_case, mock_image):
 
 def test_classify_documents_error_predict(mock_use_case, mock_image):
 
+    mock_use_case.classes = mock.MagicMock(return_value=["rg", "cnh", "passaporte"])
     mock_use_case.predict.side_effect = PredictionError("Erro ao fazer a predição")
     classify_documents = ClassifyDocuments(model_classifier=mock_use_case)
 
@@ -45,6 +45,7 @@ def test_classify_documents_error_predict(mock_use_case, mock_image):
 
 def test_classify_documents_diff_label(mock_use_case, mock_image):
 
+    mock_use_case.classes = mock.MagicMock(return_value=["rg", "cnh", "passaporte"])
     input_document = DocumentTypeEnum.RG
     classify_documents = ClassifyDocuments(model_classifier=mock_use_case)
 
@@ -58,6 +59,7 @@ def test_classify_documents_diff_label(mock_use_case, mock_image):
 
 def test_classify_documents_sucess(mock_use_case, mock_image):
 
+    mock_use_case.classes = mock.MagicMock(return_value=["rg", "cnh", "passaporte"])
     input_document = DocumentTypeEnum.RG
     classify_documents = ClassifyDocuments(model_classifier=mock_use_case)
 

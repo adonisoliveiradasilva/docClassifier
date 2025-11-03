@@ -40,5 +40,4 @@ class ArchitectureModel:
                 layers.Dense(num_classes, activation="softmax"),
             ]
         )
-
         return model

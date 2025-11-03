@@ -26,13 +26,9 @@ class ModelClassifyDocumentsTrain:
         logger.info("[ModelClassifyDocumentsTrain] - iniciando o treinamento do modelo")
         try:
             train_gen, val_gen, class_names = ImageDatasetLoader().pre_process_images_train()
-            num_classes = len(class_names)
-            if num_classes == 0:
-                logger.error("[ModelClassifyDocumentsTrain] - não foi possível determinar o número de classes")
-                raise ValueError("Não foi possível determinar o número de classes")
 
             arch_model = ArchitectureModel()
-            model = arch_model.model(num_classes=num_classes)
+            model = arch_model.model(num_classes=len(class_names))
 
             model.compile(
                 optimizer=Adam(learning_rate=LEARNING_RATE), loss="categorical_crossentropy", metrics=["accuracy"]
@@ -89,13 +85,13 @@ class ModelClassifyDocumentsTrain:
                 "accuracy": accurary,
                 "classification_report": report,
                 "confusion_matrix": conf_matrix.tolist(),
-                "class_names": val_gen.class_indices,
+                "dict_classes": val_gen.class_indices,
             }
 
             with open(PATH_SALVE_MODEL + METRICS_NAME, "w", encoding="utf-8") as f:
                 json.dump(metrics_data, f, indent=4, ensure_ascii=False)
         except Exception as err:
-            logger.error(f"[ModelClassifyDocumentsTrain] - erro ao avaliar e salvar as metricas do modelo: {str(err)}")
+            logger.error(f"[ModelClassifyDocumentsTrain] - erro ao avaliar e salvar as métricas do modelo: {str(err)}")
 
 
 # Execução do treinamento

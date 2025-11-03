@@ -8,12 +8,12 @@ from api.src.infra.logs import logger
 
 class ImageDatasetLoader:
     """
-    Classe responsável por carregar e pré-processar as imagens para o treinamento do modelo ModelClassifyDocuments
+    Classe responsável por carregar e pré-processar as imagens para o treinamento do modelo ModelClassifyDocuments.
     """
 
     def pre_process_images_train(self) -> Tuple[DirectoryIterator, DirectoryIterator, List[str]]:
         """
-        Método responsável por processar as imagens para o treinamento
+        Método responsável por processar as imagens para o treinamento.
         """
         try:
             logger.info("[ImageDatasetLoader] - passo: iniciando o processamento das imagens para o treinamento")
@@ -48,6 +48,9 @@ class ImageDatasetLoader:
                 seed=SEED,
             )
             class_labels = list(train_generator.class_indices.keys())
+
+            if class_labels is None or len(class_labels) == 0:
+                raise ValueError("Não foi possível determinar o número de classes")
 
             return train_generator, validation_generator, class_labels
         except Exception as err:

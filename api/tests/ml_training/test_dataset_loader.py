@@ -15,7 +15,7 @@ class TestImageDataGenerator:
         run = ImageDatasetLoader()
         yield run
 
-    @mock.patch("api.ml_training.dataset_loader.ImageDataGenerator.flow_from_directory")
+    @mock.patch("api.ml_training.dataset_loader.image_dataset_from_directory")
     @mock.patch("api.ml_training.dataset_loader.logger")
     def test_pre_process_images_train_error(self, mock_logger, mock_flow, setup):
 
@@ -28,7 +28,7 @@ class TestImageDataGenerator:
             "[ImageDatasetLoader] - erro ao processar as imagens para o treinamento: Erro de teste"
         )
 
-    @mock.patch("api.ml_training.dataset_loader.ImageDataGenerator.flow_from_directory")
+    @mock.patch("api.ml_training.dataset_loader.image_dataset_from_directory")
     @mock.patch("api.ml_training.dataset_loader.logger")
     def test_not_classes(self, mock_logger, mock_flow, setup):
 
@@ -52,12 +52,17 @@ class TestImageDataGenerator:
             "Não foi possível determinar o número de classes"
         )
 
-    @mock.patch("api.ml_training.dataset_loader.ImageDataGenerator.flow_from_directory")
-    def test_pre_process_images_train(self, mock_flow, setup):
+    @mock.patch("api.ml_training.dataset_loader.image_dataset_from_directory")
+    def test_pre_process_images_train_sucess(self, mock_flow, setup):
 
         mock_train_gen = mock.MagicMock()
         mock_validation_gen = mock.MagicMock()
-        mock_train_gen.class_indices = {"cnh": 0, "rg": 1, "passaporte": 2, "outros": 3}
+        mock_train_gen.class_names = ["cnh", "rg", "passaporte", "outros"]
+
+        mock_train_gen.map.return_value = mock_train_gen
+        mock_train_gen.prefetch.return_value = mock_train_gen
+        mock_validation_gen.map.return_value = mock_validation_gen
+        mock_validation_gen.prefetch.return_value = mock_validation_gen
 
         mock_flow.side_effect = [mock_train_gen, mock_validation_gen]
 

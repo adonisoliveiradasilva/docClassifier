@@ -1,4 +1,4 @@
-from Keras import layers, models
+from keras import layers, models
 from keras.models import Model
 
 from api.ml_training.constants import INPUT_SHAPE

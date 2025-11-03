@@ -1,6 +1,7 @@
 from typing import List, Tuple
 
-from tensorflow.keras.preprocessing.image import DirectoryIterator, ImageDataGenerator
+from keras.preprocessing.image import ImageDataGenerator
+from tensorflow.data import Dataset
 
 from api.ml_training.constants import BATCH_SIZE, IMAGE_SIZE, PATH_DATASET_TRAIN, SEED, VALIDATION_SPLIT
 from api.src.infra.logs import logger
@@ -11,7 +12,7 @@ class ImageDatasetLoader:
     Classe responsável por carregar e pré-processar as imagens para o treinamento do modelo ModelClassifyDocuments.
     """
 
-    def pre_process_images_train(self) -> Tuple[DirectoryIterator, DirectoryIterator, List[str]]:
+    def pre_process_images_train(self) -> Tuple[Dataset, Dataset, List[str]]:
         """
         Método responsável por processar as imagens para o treinamento.
         """

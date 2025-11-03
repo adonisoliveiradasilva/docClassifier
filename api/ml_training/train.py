@@ -5,8 +5,8 @@ from keras import backend as K
 from keras.callbacks import EarlyStopping, ReduceLROnPlateau
 from keras.models import Model
 from keras.optimizers import Adam
-from keras.utils import DirectoryIterator
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+from tensorflow.data import Dataset
 
 from api.ml_training.architecture_model import ArchitectureModel
 from api.ml_training.constants import BATCH_SIZE, EPOCHS, LEARNING_RATE, METRICS_NAME, MODEL_NAME, PATH_SALVE_MODEL
@@ -61,7 +61,7 @@ class ModelClassifyDocumentsTrain:
         finally:
             K.clear_session()
 
-    def _salve_metrics_model(self, model: Model, val_gen: DirectoryIterator, class_names: List[str]) -> None:
+    def _salve_metrics_model(self, model: Model, val_gen: Dataset, class_names: List[str]) -> None:
         """
         Método responsável por salvar as métricas do modelo treinado.
 

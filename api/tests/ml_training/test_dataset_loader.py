@@ -5,36 +5,71 @@ import pytest
 from api.ml_training.dataset_loader import ImageDatasetLoader
 
 
-@mock.patch("api.ml_training.dataset_loader.ImageDataGenerator.flow_from_directory")
-def test_pre_process_images_train(mock_flow):
+class TestImageDataGenerator:
+    """
+    Testes da classe ImageDatasetLoader
+    """
 
-    mock_train_gen = mock.MagicMock()
-    mock_validation_gen = mock.MagicMock()
-    mock_train_gen.class_indices = {"cnh": 0, "rg": 1, "passaporte": 2, "outros": 3}
+    @pytest.fixture
+    def setup(self):
+        run = ImageDatasetLoader()
+        yield run
 
-    mock_flow.side_effect = [mock_train_gen, mock_validation_gen]
+    @mock.patch("api.ml_training.dataset_loader.image_dataset_from_directory")
+    @mock.patch("api.ml_training.dataset_loader.logger")
+    def test_pre_process_images_train_error(self, mock_logger, mock_flow, setup):
 
-    loader = ImageDatasetLoader()
-    train_generator, validation_generator, class_labels = loader.pre_process_images_train()
+        mock_flow.side_effect = Exception("Erro de teste")
 
-    assert train_generator == mock_train_gen
-    assert validation_generator == mock_validation_gen
-    assert set(class_labels) == {"cnh", "rg", "passaporte", "outros"}
+        with pytest.raises(Exception):
+            setup.pre_process_images_train()
 
-    assert mock_flow.call_count == 2
+        mock_logger.error.assert_called_once_with(
+            "[ImageDatasetLoader] - erro ao processar as imagens para o treinamento: Erro de teste"
+        )
 
+    @mock.patch("api.ml_training.dataset_loader.image_dataset_from_directory")
+    @mock.patch("api.ml_training.dataset_loader.logger")
+    def test_not_classes(self, mock_logger, mock_flow, setup):
 
-@mock.patch("api.ml_training.dataset_loader.logger")
-@mock.patch("api.ml_training.dataset_loader.ImageDataGenerator.flow_from_directory")
-def test_pre_process_images_train_exception(mock_flow, mock_logger):
+        mock_train_gen = mock.MagicMock()
+        mock_validation_gen = mock.MagicMock()
+        mock_train_img_gen = mock.MagicMock()
+        mock_val_img_gen = mock.MagicMock()
 
-    mock_flow.side_effect = Exception("Erro de teste")
+        mock_train_img_gen.flow_from_directory.return_value = [mock_train_gen]
+        mock_val_img_gen.flow_from_directory.return_value = [mock_validation_gen]
+        mock_flow.side_effect = [mock_train_img_gen, mock_val_img_gen]
 
-    loader = ImageDatasetLoader()
-    with pytest.raises(Exception):
-        loader.pre_process_images_train()
+        mock_train_gen.class_indices = None
 
-    mock_logger.error.assert_called_once()
-    mock_logger.error.assert_called_with(
-        "[ImageDatasetLoader] - erro ao processar as imagens para o treinamento: Erro de teste"
-    )
+        with pytest.raises(ValueError, match="Não foi possível determinar o número de classes"):
+            setup.pre_process_images_train()
+
+        mock_logger.error.assert_called()
+        mock_logger.error.assert_called_once_with(
+            "[ImageDatasetLoader] - erro ao processar as imagens para o treinamento: "
+            "Não foi possível determinar o número de classes"
+        )
+
+    @mock.patch("api.ml_training.dataset_loader.image_dataset_from_directory")
+    def test_pre_process_images_train_sucess(self, mock_flow, setup):
+
+        mock_train_gen = mock.MagicMock()
+        mock_validation_gen = mock.MagicMock()
+        mock_train_gen.class_names = ["cnh", "rg", "passaporte", "outros"]
+
+        mock_train_gen.map.return_value = mock_train_gen
+        mock_train_gen.prefetch.return_value = mock_train_gen
+        mock_validation_gen.map.return_value = mock_validation_gen
+        mock_validation_gen.prefetch.return_value = mock_validation_gen
+
+        mock_flow.side_effect = [mock_train_gen, mock_validation_gen]
+
+        train_generator, validation_generator, class_labels = setup.pre_process_images_train()
+
+        assert train_generator == mock_train_gen
+        assert validation_generator == mock_validation_gen
+        assert set(class_labels) == {"cnh", "rg", "passaporte", "outros"}
+
+        assert mock_flow.call_count == 2

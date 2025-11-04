@@ -1,4 +1,4 @@
-from Keras import layers, models
+from keras import layers, models
 from keras.models import Model
 
 from api.ml_training.constants import INPUT_SHAPE
@@ -31,14 +31,13 @@ class ArchitectureModel:
                 layers.Activation("relu"),
                 layers.MaxPooling2D(pool_size=(2, 2)),
                 layers.Flatten(),
-                layers.Dense(256, padding="same"),
+                layers.Dense(256),
                 layers.BatchNormalization(),
                 layers.Activation("relu"),
                 layers.Dropout(0.3),
-                layers.Dense(128, padding="same"),
+                layers.Dense(128),
                 layers.Activation("relu"),
                 layers.Dense(num_classes, activation="softmax"),
             ]
         )
-
         return model

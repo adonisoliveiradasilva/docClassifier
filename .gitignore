@@ -53,3 +53,4 @@ run.py
 
 # Ignorar pasta de dados
 api/src/infra/datasets/train/
+api/src/infra/datasets/validation/

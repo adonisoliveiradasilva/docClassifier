@@ -29,6 +29,7 @@ class ImageDatasetLoader:
                 shuffle=True,
                 subset="training",
                 seed=SEED,
+                validation_split=VALIDATION_SPLIT,
             )
 
             validation_data = image_dataset_from_directory(
@@ -40,6 +41,8 @@ class ImageDatasetLoader:
                 seed=SEED,
                 validation_split=VALIDATION_SPLIT,
             )
+
+            class_labels = train_data.class_names
 
             normalization_layer = layers.Rescaling(1.0 / 255)
             data_augmentation = tf.keras.Sequential(  # pylint: disable=no-member
@@ -58,7 +61,6 @@ class ImageDatasetLoader:
                 buffer_size=tf.data.AUTOTUNE
             )
 
-            class_labels = train_data.class_names
             if class_labels is None or len(class_labels) == 0:
                 raise ValueError("Não foi possível determinar o número de classes")
 

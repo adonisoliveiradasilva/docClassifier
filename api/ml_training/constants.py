@@ -1,6 +1,7 @@
 # Caminhos dos dados e onde salvar o modelo
 PATH_DATASET_TRAIN = "api/src/infra/datasets/train"
 PATH_SALVE_MODEL = "api/src/infra/models/classify_documents/"
+PATH_DATASET_VALIDATION = "api/src/infra/datasets/validation"
 
 # Hiperpâremtros para o treinamento do modelo
 IMAGE_SIZE = (128, 128)

@@ -1,6 +1,8 @@
 import json
 from typing import List
 
+import numpy as np
+import tensorflow as tf
 from keras import backend as K
 from keras.callbacks import EarlyStopping, ReduceLROnPlateau
 from keras.models import Model
@@ -35,9 +37,12 @@ class ModelClassifyDocumentsTrain:
             )
 
             callbacks = [
-                EarlyStopping(monitor="val_loss", patience=5, restore_best_weights=True),
-                ReduceLROnPlateau(monitor="val_loss", factor=0.2, patience=3),
+                EarlyStopping(monitor="val_loss", patience=8, restore_best_weights=True),
+                ReduceLROnPlateau(monitor="val_loss", factor=0.5, patience=5),
             ]
+
+            steps_per_epoch = tf.data.experimental.cardinality(train_gen).numpy()
+            validation_steps = tf.data.experimental.cardinality(val_gen).numpy()
 
             model.fit(
                 train_gen,
@@ -45,8 +50,8 @@ class ModelClassifyDocumentsTrain:
                 validation_data=val_gen,
                 batch_size=BATCH_SIZE,
                 callbacks=callbacks,
-                steps_per_epoch=train_gen.n // BATCH_SIZE,
-                validation_steps=val_gen.n // BATCH_SIZE,
+                steps_per_epoch=steps_per_epoch,
+                validation_steps=validation_steps,
             )
 
             self._salve_metrics_model(model, val_gen, class_names)
@@ -61,31 +66,40 @@ class ModelClassifyDocumentsTrain:
         finally:
             K.clear_session()
 
-    def _salve_metrics_model(self, model: Model, val_gen: Dataset, class_names: List[str]) -> None:
+    def _salve_metrics_model(self, model: Model, validation: Dataset, class_names: List[str]) -> None:
         """
         Método responsável por salvar as métricas do modelo treinado.
 
         Args:
             model: modelo treinado
-            val_gen: dados de validação
+            validation: dados de validação
             class_names: classes do modelo
         """
 
         logger.info("[ModelClassifyDocumentsTrain] - iniciando avaliação do modelo")
         try:
-            y_predicts = model.predict(val_gen)
-            y_pred_classes = y_predicts.argmax(axis=1)
-            y_true_classes = val_gen.classes
+            y_true = []
+            y_pred = []
 
-            accurary = accuracy_score(y_true_classes, y_pred_classes)
-            report = classification_report(y_true_classes, y_pred_classes, target_names=class_names)
-            conf_matrix = confusion_matrix(y_true_classes, y_pred_classes)
+            # Itera sobre os batches do dataset
+            for batch_images, batch_labels in validation:
+                preds = model.predict(batch_images, verbose=0)
+                y_pred.extend(np.argmax(preds, axis=1))
+                y_true.extend(np.argmax(batch_labels.numpy(), axis=1))
+
+            y_true = np.array(y_true)
+            y_pred = np.array(y_pred)
+
+            # Calcula métricas
+            accuracy = accuracy_score(y_true, y_pred)
+            report = classification_report(y_true, y_pred, target_names=class_names, digits=4)
+            conf_matrix = confusion_matrix(y_true, y_pred)
 
             metrics_data = {
-                "accuracy": accurary,
+                "accuracy": accuracy,
                 "classification_report": report,
                 "confusion_matrix": conf_matrix.tolist(),
-                "dict_classes": val_gen.class_indices,
+                "dict_classes": dict(enumerate(class_names)),
             }
 
             with open(PATH_SALVE_MODEL + METRICS_NAME, "w", encoding="utf-8") as f:

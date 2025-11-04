@@ -1,0 +1,36 @@
+{
+    "accuracy": 0.9121338912133892,
+    "classification_report": "              precision    recall  f1-score   support\n\n         cnh     0.8060    0.9474    0.8710        57\n      outros     0.9423    0.9800    0.9608        50\n  passaporte     0.9219    0.9219    0.9219        64\n          rg     1.0000    0.8235    0.9032        68\n\n    accuracy                         0.9121       239\n   macro avg     0.9175    0.9182    0.9142       239\nweighted avg     0.9207    0.9121    0.9126       239\n",
+    "confusion_matrix": [
+        [
+            54,
+            0,
+            3,
+            0
+        ],
+        [
+            0,
+            49,
+            1,
+            0
+        ],
+        [
+            2,
+            3,
+            59,
+            0
+        ],
+        [
+            11,
+            0,
+            1,
+            56
+        ]
+    ],
+    "dict_classes": {
+        "0": "cnh",
+        "1": "outros",
+        "2": "passaporte",
+        "3": "rg"
+    }
+}

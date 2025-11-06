@@ -26,11 +26,8 @@ class ModelClassifyDocuments(ModelClassifyDocumentsInterface):
         try:
             self.model = load_model(PATH_MODEL)
             self._target_size = IMAGE_SIZE
-
-            # Aqui não preciso ler metricas completas, apenas os nomes das classes
-
             class_names = self._load_class_names(Path(PATH_METRICS))
-            self._classes: List[str] = [name for name, index in sorted(class_names.items(), key=lambda item: item[1])]
+            self._classes: List[str] = [class_names[str(i)] for i in range(len(class_names))]
         except Exception as exc:
             raise ValueError("[ModelClassifyDocuments] - arquivo do modelo ou métricas não encontrado") from exc
 
@@ -46,25 +43,26 @@ class ModelClassifyDocuments(ModelClassifyDocumentsInterface):
             img_array = np.expand_dims(img_array, axis=0)
 
             predictions = self.model.predict(img_array)
-            confience = float(np.max(predictions))
-            label = self._classes[int(np.argmax(predictions))]
+            confience = round(float(np.max(predictions)), 2)
+            label_index = int(np.argmax(predictions))
+            label = self._classes[label_index]
 
             return str(label), confience
 
         except Exception as err:
             raise ValueError(f"[ModelClassifyDocuments] - erro ao executar a previsão da imagem: {str(err)}") from err
 
-    def _load_class_names(self, path: Path) -> Dict[str, int]:
+    def _load_class_names(self, path: Path) -> Dict[str, str]:
         """
         Carrega os nomes das classes a partir de um arquivo JSON.
         """
         with open(path, "r", encoding="utf-8") as f:
             metrics_data = json.load(f)
 
-        if "class_names" not in metrics_data:
-            raise ValueError("A chave 'class_names' não foi encontrada no arquivo de métricas.")
+        if "dict_classes" not in metrics_data:
+            raise ValueError("A chave 'dict_classes' não foi encontrada no arquivo de métricas.")
 
-        return metrics_data["class_names"]  # type: ignore[no-any-return]
+        return metrics_data["dict_classes"]  # type: ignore[no-any-return]
 
     def classes(self) -> List[str]:
         return self._classes

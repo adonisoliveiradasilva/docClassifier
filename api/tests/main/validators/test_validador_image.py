@@ -15,7 +15,7 @@ async def test_validator_image_none(mock_request_form):
         await validate_image(mock_request_form)
 
     assert info.value.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
-    assert info.value.detail == "Imagem não fornecida"
+    assert info.value.detail == "Imagem não fornecida ou formato inválido"
 
 
 @pytest.mark.asyncio

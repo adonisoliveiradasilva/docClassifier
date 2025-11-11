@@ -1,4 +1,5 @@
 from fastapi import HTTPException, Request, UploadFile, status
+from starlette.datastructures import UploadFile as StarletteUploadFile
 
 ALLOWED_MIME_TYPES = ["image/png", "image/jpeg", "image/jpg"]
 ALLOWED_EXTENSIONS = [".png", ".jpg", ".jpeg"]
@@ -10,10 +11,10 @@ async def validate_image(request: Request) -> bytes:
     """
     form = await request.form()
     image = form.get("image")
-    if not isinstance(image, UploadFile):
+    if not isinstance(image, (UploadFile, StarletteUploadFile)):
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Imagem não fornecida",
+            detail="Imagem não fornecida ou formato inválido",
         )
 
     if not image.content_type or image.content_type not in ALLOWED_MIME_TYPES:

@@ -2,7 +2,7 @@ from typing import Optional, Union
 
 from fastapi import APIRouter, Depends, Form, HTTPException, status
 from fastapi.concurrency import run_in_threadpool
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, Response
 
 from api.src.domain.enums import DocumentTypeEnum
 from api.src.main.dependencies import get_model_classifier
@@ -30,7 +30,7 @@ async def classify_docs(
     document_type_str: Optional[str] = Form(None, alias="documentType"),
     model_use_case: ClassifyDocuments = Depends(get_model_classifier),
     image_bytes: bytes = Depends(validate_image),
-) -> Union[PredictionResponse, JSONResponse]:
+) -> Union[PredictionResponse, Response]:
     """
     Rota para classificar o documento.
 

@@ -1,8 +1,8 @@
-from typing import Union
+from typing import Optional, Union
 
-from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, status
+from fastapi import APIRouter, Depends, Form, HTTPException, status
 from fastapi.concurrency import run_in_threadpool
-from fastapi.responses import JSONResponse, Response
+from fastapi.responses import JSONResponse
 
 from api.src.domain.enums import DocumentTypeEnum
 from api.src.main.dependencies import get_model_classifier
@@ -15,6 +15,7 @@ router = APIRouter(tags=["ClassifyDocuments"], prefix="/model")
 
 @router.post(
     "/classify_docs",
+    response_model=ResponseModel,
     description=(
         "Classifica a imagem enviada (ex: CNH, RG, Passaporte) e valida "
         "se o tipo identificado pelo modelo corresponde ao tipo informado pelo usuário."
@@ -26,16 +27,20 @@ router = APIRouter(tags=["ClassifyDocuments"], prefix="/model")
     },
 )
 async def classify_docs(
-    document_type_str: str = Form(..., alias="documentType"),
-    image: UploadFile = File(...),  # pylint: disable=unused-argument
+    document_type_str: Optional[str] = Form(None, alias="documentType"),
     model_use_case: ClassifyDocuments = Depends(get_model_classifier),
     image_bytes: bytes = Depends(validate_image),
-) -> Union[Response, ResponseModel]:
+) -> Union[PredictionResponse, JSONResponse]:
     """
     Rota para classificar o documento.
 
     Se o documento for classificado corretamente, retorna o resultado da classificação.
     """
+    if not document_type_str:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="Tipo de documento não fornecido.",
+        )
     try:
         expected_document_type = DocumentTypeEnum(document_type_str.lower())
     except ValueError as err:
@@ -58,7 +63,7 @@ async def classify_docs(
                 message=f"Não foi possível identificar {document_type_str.upper()} na imagem enviada.",
                 data=payload,
             )
-            return JSONResponse(status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, content=error_response.model_dump())
+            return JSONResponse(status_code=status.HTTP_200_OK, content=error_response.model_dump())
 
         return PredictionResponse(
             status_code=status.HTTP_200_OK,

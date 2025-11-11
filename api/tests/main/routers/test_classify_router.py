@@ -47,7 +47,7 @@ def test_classify_documents_not_response(mock_image, mock_model):
 
     result = client.post("/model/classify_docs", data=form_data, files=files)
 
-    assert result.status_code == 422
+    assert result.status_code == 200
     assert result.json() == {
         "status_code": 422,
         "message": f"Não foi possível identificar {form_data['documentType'].upper()} na imagem enviada.",

@@ -21,8 +21,6 @@ def test_classify_documents_success(mock_image, mock_model):
 
     result = client.post("/model/classify_docs", data=form_data, files=files)
 
-    print(result.json())
-
     assert result.status_code == 200
     assert result.json() == {
         "status_code": 200,

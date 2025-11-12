@@ -11,9 +11,12 @@ async def validate_image(request: Request) -> bytes:
     form = await request.form()
     image = form.get("image")
 
-    if not isinstance(image, UploadFile):
-        # if not image:
-        # if not image or not hasattr(image, "content_type") or not hasattr(image, "read"):
+    # if not image:
+    #     raise HTTPException(
+    #         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+    #         detail="Imagem não fornecida ou formato inválido",
+    #     )
+    if not image or not isinstance(image, UploadFile):
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail="Imagem não fornecida ou formato inválido",

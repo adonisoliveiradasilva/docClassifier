@@ -47,6 +47,8 @@ Thumbs.db
 **/__pycache__
 .pytest_cache
 .mypy_cache
+.coverage
+htmlcov/
 
 # Arquivo para rodar debug
 run.py

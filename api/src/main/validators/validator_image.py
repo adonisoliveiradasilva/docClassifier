@@ -1,18 +1,23 @@
-from fastapi import HTTPException, UploadFile, status
+from typing import Union
+
+from fastapi import HTTPException, Request, status
+from starlette.datastructures import UploadFile
 
 ALLOWED_MIME_TYPES = ["image/png", "image/jpeg", "image/jpg"]
 ALLOWED_EXTENSIONS = [".png", ".jpg", ".jpeg"]
-MAX_FILE_SIZE_MB = 5 * 1024 * 1024
 
 
-async def validate_image(image: UploadFile) -> bytes:
+async def validate_image(request: Request) -> bytes:
     """
     Valida se o arquivo enviado é uma imagem do tipo permitido (PNG, JPEG ou JPG).
     """
-    if not image:
+    form = await request.form()
+    image: Union[UploadFile, str, None] = form.get("image")
+
+    if not image or not hasattr(image, "read") or not hasattr(image, "content_type"):
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail="Imagem não fornecida",
+            detail="Imagem não fornecida ou formato inválido",
         )
 
     if not image.content_type or image.content_type not in ALLOWED_MIME_TYPES:
@@ -22,10 +27,5 @@ async def validate_image(image: UploadFile) -> bytes:
         )
 
     image_bytes = await image.read()
-    if len(image_bytes) > MAX_FILE_SIZE_MB:
-        raise HTTPException(
-            status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
-            detail=f"Imagem muito grande. Limite: {MAX_FILE_SIZE_MB}MB.",
-        )
 
     return image_bytes

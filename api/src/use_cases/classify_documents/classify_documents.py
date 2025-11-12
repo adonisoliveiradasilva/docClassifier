@@ -44,7 +44,7 @@ class ClassifyDocuments:
         """
         Valida se o tipo de documento informado pelo usuário é permitido pelo modelo.
         """
-        classes = [doc_type.lower() for doc_type in self.__model.classes()]
+        classes = [item.value for item in DocumentTypeEnum]
 
         if document_type.value.lower() not in classes:
             raise InvalidDocumentTypeError(

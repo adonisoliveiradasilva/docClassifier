@@ -2,8 +2,8 @@ import { IOptionsDocument } from "../shared/data/models/IOptionsDocument.model";
 
 export const optionsDocument: IOptionsDocument[] = [
     {
-        label: 'Identidade',
-        slug: 'identidade',
+        label: 'RG',
+        slug: 'rg',
     },
     {
         label: 'Passaporte',

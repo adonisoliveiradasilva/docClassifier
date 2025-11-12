@@ -2,7 +2,6 @@ import io
 from unittest import mock
 
 import pytest
-from fastapi import UploadFile
 
 from api.src.main import app
 from api.src.main.dependencies import get_model_classifier
@@ -31,6 +30,19 @@ def mock_image(image_bytes):
 
 
 @pytest.fixture
+def mock_image_validate():
+    """
+    Cria um mock de arquivo de imagem para upload.
+    """
+    fake_bytes = b"fake image data"
+    mock_file = mock.MagicMock()
+    mock_file.read = mock.AsyncMock(return_value=fake_bytes)
+    mock_file.filename = "test.png"
+    mock_file.content_type = "image/png"
+    return mock_file
+
+
+@pytest.fixture
 def mock_model():
     """
     Cria um mock para o caso de uso.
@@ -42,24 +54,6 @@ def mock_model():
 
 
 @pytest.fixture
-def mock_upload_file_factory():
-    """
-    Cria um mock de UploadFile do FastAPI.
-    """
-
-    def _factory(filename: str = "test.png", content_type: str = "image/png", file_size: int = 1024) -> mock.MagicMock:
-
-        fake_content = b"a" * file_size
-        upload_file_mock = mock.MagicMock(spec=UploadFile)
-        upload_file_mock.filename = filename
-        upload_file_mock.content_type = content_type
-        upload_file_mock.read = mock.AsyncMock(return_value=fake_content)
-        return upload_file_mock
-
-    return _factory
-
-
-@pytest.fixture
 def mock_use_case():
     """
     Cria um mock para o modelo classificador (que possui o método 'predict' e a lista 'classes').
@@ -68,3 +62,13 @@ def mock_use_case():
     mock_model_predict.predict = mock.MagicMock()
     mock_model_predict.classes = ["cnh", "rg", "passaporte"]
     return mock_model_predict
+
+
+@pytest.fixture
+def mock_request_form():
+    """
+    Cria um mock para o Request com form vazio.
+    """
+    mock_request = mock.MagicMock()
+    mock_request.form = mock.AsyncMock(return_value={})
+    return mock_request

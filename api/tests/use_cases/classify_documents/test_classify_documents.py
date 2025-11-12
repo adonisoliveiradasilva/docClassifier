@@ -14,19 +14,21 @@ def test_classify_documents_init(mock_use_case):
 
 
 def test_classify_documents_validate_type_input(mock_use_case, mock_image):
-
-    allowed_classes_list = ["rg", "passaporte"]
-    mock_use_case.classes = mock.MagicMock(return_value=allowed_classes_list)
-
     classify_documents = ClassifyDocuments(model_classifier=mock_use_case)
 
-    document_invalid_test = DocumentTypeEnum.CNH
+    # cria um tipo inválido (não presente no Enum)
+    class FakeDocumentTypeEnum:
+        """Cria um tipo inválido para teste."""
+
+        value = "titulo_eleitor"
+
+    document_invalid_test = FakeDocumentTypeEnum()
 
     with pytest.raises(InvalidDocumentTypeError) as info:
         classify_documents.execute(image_bytes=mock_image, document_type=document_invalid_test)
 
-    assert "Tipo de documento informado (cnh)" in str(info.value)
-    assert "não é um tipo válido. Permitidos: rg, passaporte" in str(info.value)
+    assert "Tipo de documento informado (titulo_eleitor)" in str(info.value)
+    assert "não é um tipo válido." in str(info.value)
 
 
 def test_classify_documents_error_predict(mock_use_case, mock_image):

@@ -86,3 +86,15 @@ repos:
         always_run: true
         pass_filenames: false
         stages: [pre-push]
+
+  - repo: local
+    hooks:
+      - id: coverage
+        name: coverage
+        require_serial: true
+        entry: ./venv/Scripts/coverage.exe run -m pytest api/tests
+        language: system
+        stages: [pre-push]
+        pass_filenames: false
+        always_run: true
+

@@ -92,7 +92,7 @@ repos:
       - id: coverage
         name: coverage
         require_serial: true
-        entry: ./venv/Scripts/coverage.exe ./api/tests
+        entry: ./venv/Scripts/coverage.exe run -m pytest ./api/tests
         language: system
         stages: [pre-push]
 

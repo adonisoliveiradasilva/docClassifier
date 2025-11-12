@@ -95,4 +95,6 @@ repos:
         entry: ./venv/Scripts/coverage.exe run -m pytest api/tests
         language: system
         stages: [pre-push]
+        pass_filenames: false
+        always_run: true
 

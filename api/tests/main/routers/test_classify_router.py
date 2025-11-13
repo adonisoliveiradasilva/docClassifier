@@ -61,7 +61,7 @@ def test_classify_documents_not_response(mock_image, mock_model):
 
 
 def test_classify_documents_invalid_document_type(mock_image, mock_model):
-    form_data = {"documentType": "invalid_type"}
+    form_data = {"document_type": "invalid_type"}
     files = mock_image
 
     result = client.post("/model/classify_docs", data=form_data, files=files)

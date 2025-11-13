@@ -28,6 +28,8 @@ A regra de Dependência é estritamente seguinda: **as camadas externas dependem
 
 * `api/src/main/` - *Camada principal*: é a camada que faz a conexão e expõe a aplicação via HTTP. Nesta camada, é criada a instância do FastAPI, são registrados os handlers de exceção, é feita a conexão com a interface e a injeção do caso de uso, são definidos os endpoints e validados os inputs da API.
 
+* `api/tests/` - *Camadas de testes*: testes unitários e de integração responsáveis por validar o comportamento da camada principal da aplicação e garantir a estabilidade da API.
+
 ## Endpoints
 
 A API possui um endpoint principal para classificação:
@@ -45,7 +47,7 @@ A requisição deve ser do tipo `multipart/form-data` e conter os seguintes camp
 
 * `file`: O arquivo de imagem a ser classificado, sendo os permitidos: `png`, `jpeg`, e `jpg`.
 
-E a resposta de sucesso é a seguinte:
+E a resposta de sucesso é a seguinte: - adiiconr mais
 
 ```json
 {
@@ -61,6 +63,6 @@ E a resposta de sucesso é a seguinte:
 ```
 **Respostas de Erro**:
 
-* `422 Unprocessable Entity`: A requisição falhou na validação (ex: `image` não é uma imagem válida ou `expected_type` não é um dos valores permitidos).
+* `422 Unprocessable Entity`: A requisição falhou na validação (ex: `image` não é uma imagem válida ou `documentType` não é um dos valores permitidos).
 
 * `500 Internal Server Error`: Ocorreu um erro inesperado durante a predição do modelo.

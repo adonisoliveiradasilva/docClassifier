@@ -103,5 +103,3 @@ O modelo central é uma **Rede Neural Convolucional (CNN)** treinada para catego
 Para detalhes técnicos sobre a arquitetura do modelo, estrutura de pastas, _endpoints_ da API, acesse:
 
 [**/docs**](docs/)
-
-#### pre-commit install -t pre-push

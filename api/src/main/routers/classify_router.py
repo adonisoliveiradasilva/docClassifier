@@ -1,6 +1,6 @@
 from typing import Optional, Union
 
-from fastapi import APIRouter, Depends, Form, HTTPException, status
+from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, status
 from fastapi.concurrency import run_in_threadpool
 from fastapi.responses import JSONResponse, Response
 
@@ -26,8 +26,10 @@ router = APIRouter(tags=["ClassifyDocuments"], prefix="/model")
         500: {"model": ResponseErrorModel},
     },
 )
+# pylint: disable=unused-argument
 async def classify_docs(
-    document_type_str: Optional[str] = Form(None, alias="documentType"),
+    document_type: Optional[str] = Form(..., description="Tipo de documento esperado (ex: cnh, rg, passaporte)."),
+    image: UploadFile = File(..., description="A imagem do documento a ser classificada."),
     model_use_case: ClassifyDocuments = Depends(get_model_classifier),
     image_bytes: bytes = Depends(validate_image),
 ) -> Union[PredictionResponse, Response]:
@@ -36,16 +38,16 @@ async def classify_docs(
 
     Se o documento for classificado corretamente, retorna o resultado da classificação.
     """
-    if not document_type_str:
+    if not document_type:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail="Tipo de documento não fornecido.",
         )
     try:
-        expected_document_type = DocumentTypeEnum(document_type_str.lower())
+        expected_document_type = DocumentTypeEnum(document_type.lower())
     except ValueError as err:
         raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=f"Tipo de documento inválido: {document_type_str}."
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=f"Tipo de documento inválido: {document_type}."
         ) from err
 
     try:
@@ -60,7 +62,7 @@ async def classify_docs(
         if not payload.is_match:
             error_response = ResponseModel(
                 status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-                message=f"Não foi possível identificar {document_type_str.upper()} na imagem enviada.",
+                message=f"Não foi possível identificar {document_type.upper()} na imagem enviada.",
                 data=payload,
             )
             return JSONResponse(status_code=status.HTTP_200_OK, content=error_response.model_dump())

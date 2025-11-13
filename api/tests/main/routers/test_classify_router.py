@@ -16,7 +16,7 @@ def test_classify_documents_success(mock_image, mock_model):
         is_match=True,
     )
     mock_model.execute.return_value = result
-    form_data = {"documentType": "cnh"}
+    form_data = {"document_type": "cnh"}
     files = mock_image
 
     result = client.post("/model/classify_docs", data=form_data, files=files)
@@ -42,7 +42,7 @@ def test_classify_documents_not_response(mock_image, mock_model):
         is_match=False,
     )
     mock_model.execute.return_value = result
-    form_data = {"documentType": "passaporte"}
+    form_data = {"document_type": "passaporte"}
     files = mock_image
 
     result = client.post("/model/classify_docs", data=form_data, files=files)
@@ -50,7 +50,7 @@ def test_classify_documents_not_response(mock_image, mock_model):
     assert result.status_code == 200
     assert result.json() == {
         "status_code": 422,
-        "message": f"Não foi possível identificar {form_data['documentType'].upper()} na imagem enviada.",
+        "message": f"Não foi possível identificar {form_data['document_type'].upper()} na imagem enviada.",
         "data": {
             "user_expected_type": "passaporte",
             "model_predicted_type": "cnh",
@@ -61,7 +61,7 @@ def test_classify_documents_not_response(mock_image, mock_model):
 
 
 def test_classify_documents_invalid_document_type(mock_image, mock_model):
-    form_data = {"documentType": "invalid_type"}
+    form_data = {"document_type": "invalid_type"}
     files = mock_image
 
     result = client.post("/model/classify_docs", data=form_data, files=files)
@@ -74,7 +74,7 @@ def test_classify_documents_invalid_document_type(mock_image, mock_model):
 def test_classify_documents_internal_error(mock_image, mock_model):
 
     mock_model.execute.side_effect = PredictionError("Test")
-    form_data = {"documentType": "cnh"}
+    form_data = {"document_type": "cnh"}
     files = mock_image
 
     result = client.post("/model/classify_docs", data=form_data, files=files)

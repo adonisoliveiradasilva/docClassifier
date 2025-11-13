@@ -24,7 +24,7 @@ export class DocumentService {
   uploadDocument(file: File, docType: string): Observable<AccuracyResponse> {
   const formData = new FormData();
   formData.append('image', file);
-  formData.append('documentType', docType);
+  formData.append('document_type', docType);
 
   return this.http.post<AccuracyResponse>(this.apiUrl, formData).pipe(
     tap(res => console.log('Resposta da API:', res)),

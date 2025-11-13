@@ -43,26 +43,65 @@ Classifica a imagem enviada e valida se o tipo identificado pelo modelo correspo
 
 A requisição deve ser do tipo `multipart/form-data` e conter os seguintes campos:
 
-* `documentType`: O tipo de documento que o usuário deseja carregar na aplicação, sendo os permitidos: `cnh`, `rg`, e `passaporte`.
+* `document_type` - *obrigatório*: tipo de documento que o usuário deseja carregar na aplicação, sendo os permitidos: `cnh`, `rg`, e `passaporte`.
 
-* `file`: O arquivo de imagem a ser classificado, sendo os permitidos: `png`, `jpeg`, e `jpg`.
+* `file` - *obrigatório*: arquivo de imagem a ser classificado, sendo os permitidos: `png`, `jpeg`, e `jpg`.
 
-E a resposta de sucesso é a seguinte: - adiiconr mais
 
+### Resposta de sucesso — Documento confere
+
+Indica que o tipo de documento enviado **corresponde ao tipo informado** pelo usuário.
 ```json
 {
-    "status_code": 200,
-    "message": "Classificação realizada com sucesso.",
-    "data": {
-        "user_expected_type": "cnh",
-        "model_predicted_type": "cnh",
-        "confidence_score": 0.9987,
-        "is_match": true
-    }
+	"status_code": 200,
+	"message": "Imagem confere com o tipo informado.",
+	"data": {
+		"user_expected_type": "cnh",
+		"model_predicted_type": "cnh",
+		"confidence_score": 0.62,
+		"is_match": true
+	}
 }
 ```
-**Respostas de Erro**:
 
-* `422 Unprocessable Entity`: A requisição falhou na validação (ex: `image` não é uma imagem válida ou `documentType` não é um dos valores permitidos).
+### Resposta de sucesso — Documento não confere
 
-* `500 Internal Server Error`: Ocorreu um erro inesperado durante a predição do modelo.
+Indica que o documento enviado **não corresponde ao tipo informado** pelo usuário, mesmo que a imagem tenha sido processada corretamente.
+```json
+{
+	"status_code": 422,
+	"message": "Não foi possível identificar RG na imagem enviada.",
+	"data": {
+		"user_expected_type": "rg",
+		"model_predicted_type": "cnh",
+		"confidence_score": 0.62,
+		"is_match": false
+	}
+}
+```
+
+### Resposta de erro - 422
+```json
+{
+  "detail": "Tipo de documento inválido: conta."
+}
+```
+```json
+{
+  "detail": "Tipo de documento não fornecido."
+}
+```
+```json
+{
+  "detail": "Imagem não fornecida ou formato inválido."
+}
+```
+
+### Resposta de erro - 500
+
+Ocorreu um erro inesperado durante a predição do modelo.
+```json
+{
+  "detail": "Erro interno no servidor durante a classificação."
+}
+```
